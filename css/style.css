@@ -4,7 +4,7 @@
 }
 
 @font-face {
-  font-family: "digital_dismayregular";
+  font-family: "counter";
   src: url("../fonts/digital_dismay-webfont.woff2") format("woff2"),
     url("../fonts/digital_dismay-webfont.woff") format("woff");
 }
@@ -39,7 +39,6 @@ main {
 
 .container {
   background-color: blue;
-
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -54,7 +53,20 @@ main {
   margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px;
+}
+
+.mines-remaining,
+.timer {
+  height: 30px;
+  width: 50px;
+  background: black;
+  color: red;
+  font-size: 35px;
+  font-family: "counter";
+  text-align: right;
+  line-height: 30px;
 }
 
 .grid {
@@ -104,12 +116,55 @@ main {
 
 .exploded-mine {
   background-image: url("../assets/exploded-mine.png");
+  background-size: cover;
 }
 
 .undetected-mine {
   background-image: url("../assets/undetected-mine.png");
+  background-size: cover;
 }
 
 .wrong-mine {
   background-image: url("../assets/wrong-mine.png");
+  background-size: cover;
+}
+
+.adjacent-mines-0 {
+  background-color: var(--tile-background);
+}
+.adjacent-mines-1 {
+  background-image: url("../assets/adjacent-mines-1.png");
+  background-size: cover;
+}
+.adjacent-mines-2 {
+  background-image: url("../assets/adjacent-mines-2.png");
+  background-size: cover;
+}
+.adjacent-mines-3 {
+  background-image: url("../assets/adjacent-mines-3.png");
+  background-size: cover;
+}
+.adjacent-mines-4 {
+  background-image: url("../assets/adjacent-mines-4.png");
+  background-size: cover;
+}
+.adjacent-mines-5 {
+  background-image: url("../assets/adjacent-mines-5.png");
+  background-size: cover;
+}
+.adjacent-mines-6 {
+  background-image: url("../assets/adjacent-mines-6.png");
+  background-size: cover;
+}
+.adjacent-mines-7 {
+  background-image: url("../assets/adjacent-mines-7.png");
+  background-size: cover;
+}
+.adjacent-mines-8 {
+  background-image: url("../assets/adjacent-mines-8.png");
+  background-size: cover;
+}
+.flag {
+  background-image: url("../assets/flag.png");
+  background-size: cover;
 }
