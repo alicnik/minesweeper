@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <meta rel="icon" href="" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="" />
+    <link rel="canonical" href="" />
+  </head>
+
+  <body>
+    <header>
+      <button class="difficulty" data-width="9" data-height="9" data-mines="10">
+        Easy
+      </button>
+      <button
+        class="difficulty"
+        data-width="16"
+        data-height="16"
+        data-mines="10"
+      >
+        Intermediate
+      </button>
+      <button
+        class="difficulty"
+        data-width="30"
+        data-height="16"
+        data-mines="10"
+      >
+        Expert
+      </button>
+    </header>
+    <main>
+      <div class="container">
+        <div class="displayboard">
+          <div class="mines-remaining"></div>
+          <button id="smiley-face"></button>
+          <div class="timer"></div>
+        </div>
+        <div id="grid" class="grid"></div>
+      </div>
+    </main>
+    <footer></footer>
+    <script src="scripts/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+:root {
+  --tile-background: rgb(189, 189, 189);
+  --tile-border: rgb(123, 123, 123);
+}
+
+@font-face {
+  font-family: "digital_dismayregular";
+  src: url("../fonts/digital_dismay-webfont.woff2") format("woff2"),
+    url("../fonts/digital_dismay-webfont.woff") format("woff");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+main {
+  background-color: green;
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.difficulty {
+  padding: 0.5rem 1rem;
+}
+
+.container {
+  background-color: blue;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 8px;
+}
+
+.displayboard {
+  width: 100%;
+  height: 50px;
+  background: rebeccapurple;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template: repeat(9, 1fr) / repeat(9, 1fr);
+  border-top: 1px var(--tile-border) solid;
+  border-left: 1px var(--tile-border) solid;
+}
+
+.grid div {
+  width: 20px;
+  height: 20px;
+  border: 1px var(--tile-border) solid;
+  position: relative;
+}
+
+.tile-initial {
+  background: var(--tile-background);
+}
+
+.tile-initial::before {
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-left: 2px white solid;
+  border-top: 2px white solid;
+  position: absolute;
+  transform: translate(-1px, -1px);
+}
+.tile-initial::after {
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-bottom: 2px var(--tile-border) solid;
+  border-right: 2px var(--tile-border) solid;
+  position: absolute;
+}
+
+.tile-initial:active:hover::before,
+.tile-initial:active:hover::after {
+  display: none;
+}
+
+.tile-empty {
+  background: var(--tile-background);
+}
+
+.exploded-mine {
+  background-image: url("../assets/exploded-mine.png");
+}
+
+.undetected-mine {
+  background-image: url("../assets/undetected-mine.png");
+}
+
+.wrong-mine {
+  background-image: url("../assets/wrong-mine.png");
+}
