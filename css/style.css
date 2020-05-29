@@ -69,6 +69,18 @@ main {
   line-height: 30px;
 }
 
+.smiley-face {
+  height: 30px;
+  width: 30px;
+  border-radius: 1px;
+  background-image: url("../assets/happy-face.png");
+  background-size: cover;
+}
+
+.smiley-face:active:hover {
+  background-position: 1px 1px;
+}
+
 .grid {
   display: grid;
   grid-template: repeat(9, 1fr) / repeat(9, 1fr);
@@ -81,6 +93,10 @@ main {
   height: 20px;
   border: 1px var(--tile-border) solid;
   position: relative;
+}
+
+.tile {
+  background: var(--tile-background);
 }
 
 .tile-initial {
@@ -108,6 +124,11 @@ main {
 .tile-initial:active:hover::before,
 .tile-initial:active:hover::after {
   display: none;
+}
+
+.tile-initial:active:hover #smiley-face {
+  background-image: url("../assets/shocked-smiley.png");
+  background-size: cover;
 }
 
 .tile-empty {
@@ -166,5 +187,15 @@ main {
 }
 .flag {
   background-image: url("../assets/flag.png");
+  background-size: cover;
+}
+
+.dead-smiley {
+  background-image: url("../assets/dead-smiley.png");
+  background-size: cover;
+}
+
+.sunglasses-smiley {
+  background-image: url("../assets/smiley-sunglasses.png");
   background-size: cover;
 }

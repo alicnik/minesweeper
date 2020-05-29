@@ -2,16 +2,15 @@ function main() {
   
   // DOM ELEMENTS
   const difficultyButtons = document.querySelectorAll('.difficulty')
-  const displayBoard = document.querySelector('.displayboard')
   const minesRemaining = document.querySelector('.mines-remaining')
-  const smileyButton = document.querySelector('#smiley-face')
+  const smileyButton = document.querySelector('.smiley-face')
   const timer = document.querySelector('.timer')
   const grid = document.querySelector('#grid')
   let tileDivs
 
   // PROGRAM VARIABLES
 
-  const mineLocations = []
+  let mineLocations = []
   let tiles = []
   let width = 9
   let height = 9
@@ -36,6 +35,8 @@ function main() {
       updateMineCounterDisplay()
     })
   })
+
+  smileyButton.addEventListener('click', reset)
 
   // DOM MANIPULATION
 
@@ -142,6 +143,7 @@ function main() {
   // }
 
   function populateMines() {
+    mineLocations = []
     for (let i = 0; i < mines; i++) {
       placeMine()
     }
@@ -157,9 +159,7 @@ function main() {
     const clickedTileIndex = Number(clickedTile.id)
     if (tiles[clickedTileIndex].flagged) return
     if (mineLocations.includes(clickedTileIndex)) {
-      clickedTile.classList.remove('tile-initial')
-      clickedTile.classList.add('exploded-mine')
-      console.log('Run endGame()')
+      gameOver(clickedTileIndex)
     } else if (adjacentMineCount(clickedTileIndex) === 0) {
       console.log('blank')
       clickedTile.classList.remove('tile-initial')
@@ -229,13 +229,35 @@ function main() {
     }, 1000)
   }
 
+  function checkProgress() {}
+
+
+  function winGame() {}
+
   function reset() {
     clearInterval(timerInterval)
     drawMinefield()
+    smileyButton.classList.remove('dead-smiley')
+    smileyButton.classList.remove('sunglasses-smiley')
+    timer.innerHTML = 0
+    minesRemaining.innerHTML = mines
+    inGameMineCount = mines
+    grid.style.pointerEvents = 'initial'
   }
 
-  function endGame() {
-
+  function gameOver(clickedTileIndex) {
+    clearInterval(timerInterval)
+    smileyButton.classList.add('dead-smiley')
+    mineLocations.forEach(mineLocationIndex => {
+      if (mineLocationIndex !== clickedTileIndex) {
+        tiles[mineLocationIndex].id.classList.remove('initial-tile')
+        tiles[mineLocationIndex].id.classList.add('undetected-mine')
+      } else {
+        tiles[mineLocationIndex].id.classList.remove('initial-tile')
+        tiles[mineLocationIndex].id.classList.add('exploded-mine')
+      }
+    })
+    grid.style.pointerEvents = 'none'
   }
 
   function updateMineCounterDisplay() {
