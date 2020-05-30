@@ -103,7 +103,8 @@ main {
   background: var(--tile-background);
 }
 
-.tile-initial::before {
+.tile-initial::before,
+.flag::before {
   content: "";
   height: 16px;
   width: 16px;
@@ -112,7 +113,8 @@ main {
   position: absolute;
   transform: translate(-1px, -1px);
 }
-.tile-initial::after {
+.tile-initial::after,
+.flag::after {
   content: "";
   height: 16px;
   width: 16px;
@@ -188,6 +190,7 @@ main {
 .flag {
   background-image: url("../assets/flag.png");
   background-size: cover;
+  z-index: 10;
 }
 
 .dead-smiley {
