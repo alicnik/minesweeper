@@ -199,3 +199,7 @@ main {
   background-image: url("../assets/smiley-sunglasses.png");
   background-size: cover;
 }
+.shocked-smiley {
+  background-image: url("../assets/shocked-smiley.png");
+  background-size: cover;
+}

@@ -20,8 +20,8 @@ function main() {
 
   // INVOKE FUNCTIONS 
 
-  drawMinefield()
-  updateMineCounterDisplay()
+  // drawMinefield()
+  // updateMineCounterDisplay()
 
   // EVENT LISTENERS
 
@@ -36,10 +36,23 @@ function main() {
     })
   })
 
+  grid.addEventListener('mousedown', (e) => {
+    if (e.button !== 2) {
+      smileyButton.classList.add('shocked-smiley')
+    }
+  })
+  
+  document.addEventListener('mouseup', () => {
+    smileyButton.classList.remove('shocked-smiley')
+  })
+
   smileyButton.addEventListener('click', reset)
 
-  // DOM MANIPULATION
 
+
+  // DOM MANIPULATION
+  drawMinefield()
+  populateMines()
   
 
   // FUNCTIONS
@@ -63,6 +76,7 @@ function main() {
         } else if (!event.target.classList.contains('flag')) {
           revealClicked(event)
           markClicked(event)
+          checkProgress()
         }
       })
       tile.addEventListener('contextmenu', event => {
@@ -72,11 +86,11 @@ function main() {
       tiles.push({ 
         id: tile, 
         adjacentTiles: adjacentTiles(width, height, i),
-        // aboveBelowEitherSide: aboveBelowEitherSide(width, height, i),
         mine: false, 
         flagged: false, 
         clicked: false,
-        recursed: false
+        recursed: false,
+        index: count
       })
       grid.appendChild(tile)
       count++
@@ -117,31 +131,6 @@ function main() {
     return workingArray.filter(index => 0 <= index && index < width * height)
   }
 
-  // function aboveBelowEitherSide(width, height, index) {
-  //   let workingArray 
-  //   if (index % width === 0) {
-  //     workingArray = [
-  //       index - width,   
-  //       index + 1, 
-  //       index + width 
-  //     ]
-  //   } else if (index % width === width - 1) {
-  //     workingArray = [ 
-  //       index - width, 
-  //       index - 1,  
-  //       index + width
-  //     ]
-  //   } else {
-  //     workingArray = [ 
-  //       index - width,  
-  //       index - 1, 
-  //       index + 1,  
-  //       index + width 
-  //     ]
-  //   }
-  //   return workingArray.filter(index => 0 <= index && index < width * height)
-  // }
-
   function populateMines() {
     mineLocations = []
     for (let i = 0; i < mines; i++) {
@@ -158,10 +147,10 @@ function main() {
     const clickedTile = e.target
     const clickedTileIndex = Number(clickedTile.id)
     if (tiles[clickedTileIndex].flagged) return
+    tiles[clickedTileIndex].clicked === true
     if (mineLocations.includes(clickedTileIndex)) {
       gameOver(clickedTileIndex)
     } else if (adjacentMineCount(clickedTileIndex) === 0) {
-      console.log('blank')
       clickedTile.classList.remove('tile-initial')
       revealExtended(clickedTileIndex)
     } else {
@@ -177,6 +166,7 @@ function main() {
         tiles[adjacentTileIndex].id.classList.remove('tile-initial')
         tiles[adjacentTileIndex].id.classList.add('adjacent-mines-0')
         tiles[adjacentTileIndex].recursed = true
+        tiles[adjacentTileIndex].clicked = true
         revealExtended(adjacentTileIndex)
       } else if (mineLocations.includes(adjacentTileIndex)) {
         return
@@ -184,6 +174,7 @@ function main() {
         const numberClass = `adjacent-mines-${adjacentMineCount(adjacentTileIndex)}`
         tiles[adjacentTileIndex].id.classList.remove('tile-initial')
         tiles[adjacentTileIndex].id.classList.add(numberClass)
+        tiles[adjacentTileIndex].clicked = true
       }
     })
   }
@@ -199,13 +190,13 @@ function main() {
   }
 
   function addRemoveFlag(targetDiv) {
-    if (tiles[targetDiv.id].flagged === false) {
+    if (tiles[targetDiv.id].flagged === false && tiles[targetDiv.id].clicked === false) {
       targetDiv.classList.remove('tile-initial')
       targetDiv.classList.add('flag')
       inGameMineCount--
       tiles[targetDiv.id].flagged = true
       updateMineCounterDisplay()
-    } else {
+    } else if (tiles[targetDiv.id].clicked === false) {
       targetDiv.classList.remove('flag')
       targetDiv.classList.add('tile-initial')
       inGameMineCount++
@@ -213,7 +204,6 @@ function main() {
       updateMineCounterDisplay()
     }
   }
-
 
   function markClicked(event) {
     tiles[event.target.id].clicked = true
@@ -229,10 +219,20 @@ function main() {
     }, 1000)
   }
 
-  function checkProgress() {}
+  function checkProgress() {
+    if (tiles.filter(tile => !mineLocations.includes(tile.index)).every(tile => tile.clicked)) {
+      winGame()
+    }
+  }
 
-
-  function winGame() {}
+  function winGame() {
+    tiles.filter(tile => mineLocations.includes(tile.index)).forEach(tile => {
+      tile.id.classList.add('flag')
+    })
+    clearInterval(timerInterval)
+    smileyButton.classList.add('sunglasses-smiley')
+    grid.style.pointerEvents = 'none'
+  }
 
   function reset() {
     clearInterval(timerInterval)
@@ -268,11 +268,15 @@ function main() {
 
   const debugButtons = document.querySelectorAll('.debug')
   const clearButton = document.querySelector('#clear')
+  const clickedTrueArray = document.querySelector('#clicked-true-array')
   const revealAllButton = document.querySelector('.reveal-all')
   debugButtons.forEach(button => {
     button.addEventListener('click', e => {
       console.log(eval(e.target.dataset.arg))
     })
+  })
+  clickedTrueArray.addEventListener('click', () => {
+    console.log(tiles.filter(tile => !mineLocations.includes(tile.index)).every(tile => tile.clicked === true))
   })
   clearButton.addEventListener('click', console.clear)
   // grid.addEventListener('click', e => console.log(e.target))
