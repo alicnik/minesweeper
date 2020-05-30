@@ -3,53 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Minesweeper</title>
     <meta rel="icon" href="" />
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+    />
     <meta name="robots" content="index, follow" />
     <meta name="description" content="" />
     <link rel="canonical" href="" />
   </head>
 
   <body>
-    <header>
-      <button class="difficulty" data-width="9" data-height="9" data-mines="10">
-        Easy
-      </button>
-      <button
-        class="difficulty"
-        data-width="16"
-        data-height="16"
-        data-mines="40"
-      >
-        Intermediate
-      </button>
-      <button
-        class="difficulty"
-        data-width="30"
-        data-height="16"
-        data-mines="99"
-      >
-        Expert
-      </button>
-    </header>
     <main>
       <div class="container">
+        <header class="title-bar">
+          <i class="fas fa-bomb"></i>
+          <h1>Minesweeper</h1>
+        </header>
         <div class="displayboard">
-          <div class="mines-remaining">000</div>
+          <div class="mines-remaining">010</div>
           <button class="smiley-face"></button>
-          <div class="timer">0</div>
+          <div class="timer">000</div>
         </div>
         <div id="grid" class="grid"></div>
       </div>
+      <div class="clock">12:00 PM</div>
     </main>
     <footer>
-      <button class="debug" data-arg="tiles">Log Tiles Array of Objects</button>
-      <button class="debug" data-arg="mineLocations">Log Mine Locations</button>
-      <button class="reveal-all">Reveal All</button>
-      <button id="clear">Clear Console</button>
-      <button id="clicked-true-array">Clicked is True Array</button>
+      <div class="option">
+        <button
+          class="difficulty"
+          data-width="9"
+          data-height="9"
+          data-mines="10"
+        ></button>
+        <p>Easy</p>
+      </div>
+      <div class="option">
+        <button
+          class="difficulty"
+          data-width="16"
+          data-height="16"
+          data-mines="40"
+        ></button>
+        <p>Medium</p>
+      </div>
+      <div class="option">
+        <button
+          class="difficulty"
+          data-width="30"
+          data-height="16"
+          data-mines="99"
+        ></button>
+        <p>Hard</p>
+      </div>
     </footer>
     <script src="scripts/app.js"></script>
   </body>

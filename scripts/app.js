@@ -11,7 +11,7 @@ function main() {
 
   let width = 9
   let height = 9
-  let mines = 1
+  let mines = 10
   let inGameMineCount = mines
   let tilesArray = []
   let mineLocations = []
@@ -21,6 +21,7 @@ function main() {
 
   difficultyButtons.forEach(button => {
     button.addEventListener('click', (e) => {
+      console.log(button)
       height = Number(e.target.dataset.height)
       width = Number(e.target.dataset.width)
       mines = Number(e.target.dataset.mines)
@@ -57,7 +58,7 @@ function main() {
       tile.classList.add('tile')
       tile.classList.add('tile-initial')
       tile.addEventListener('click', event => {
-        if (tilesArray.every(tileObj => tileObj.clicked === false)) {
+        if (tilesArray.every(tile => tile.clicked === false)) {
           const clickedTile = tilesArray[event.target.dataset.index]
           populateMines()
           while (clickedTile.adjacentTiles.some(tileIndex => mineLocations.includes(tileIndex)) || mineLocations.includes(clickedTile.index)) {
@@ -204,7 +205,9 @@ function main() {
   function startTimer() {
     let timerCount = 1
     timerInterval = setInterval(() => {
-      timer.innerHTML = timerCount
+      timerCount < 10 ? timer.innerHTML = `00${timerCount}` :
+        timerCount < 100 ? timer.innerHTML = `0${timerCount}` : 
+          timer.innerHTML = timerCount 
       if (timerCount < 999) {
         timerCount++
       }
@@ -231,8 +234,8 @@ function main() {
     drawMinefield()
     smileyButton.classList.remove('dead-smiley')
     smileyButton.classList.remove('sunglasses-smiley')
-    timer.innerHTML = 0
-    minesRemaining.innerHTML = mines
+    timer.innerHTML = '000'
+    minesRemaining.innerHTML = `0${mines}`
     inGameMineCount = mines
     grid.style.pointerEvents = 'initial'
   }
@@ -256,35 +259,48 @@ function main() {
     minesRemaining.innerHTML = inGameMineCount
   }
 
-  // DEBUGGING
+  // DRAG AND DROP FUNCTIONALITY
 
-  // const debugButtons = document.querySelectorAll('.debug')
-  // const clearButton = document.querySelector('#clear')
-  // const clickedTrueArray = document.querySelector('#clicked-true-array')
-  // const revealAllButton = document.querySelector('.reveal-all')
-  // debugButtons.forEach(button => {
-  //   button.addEventListener('click', e => {
-  //     console.log(eval(e.target.dataset.arg))
-  //   })
-  // })
-  // clickedTrueArray.addEventListener('click', () => {
-  //   console.log(tilesArray.filter(tile => !mineLocations.includes(tile.index)).every(tile => tile.clicked === true))
-  // })
-  // clearButton.addEventListener('click', console.clear)
-  // revealAllButton.addEventListener('click', () => {
-  //   document.querySelectorAll('.tile').forEach(tile => {
-  //     const clickedTileIndex = Array.from(tileDivs).indexOf(tile)
-  //     if (mineLocations.includes(clickedTileIndex)) {
-  //       tile.classList.remove('tile-initial')
-  //       tile.classList.add('exploded-mine')
-  //       console.log('Run endGame()')
-  //     } else {
-  //       const numberClass = `adjacent-mines-${adjacentMineCount(clickedTileIndex)}`
-  //       tile.classList.remove('tile-initial')
-  //       tile.classList.add(numberClass)
-  //     }
-  //   })
-  // })
+  const container = document.querySelector('.container')
+  const titleBar = document.querySelector('.title-bar')
+  let startingPosX, startingPosY, newPosX, newPosY
+
+  titleBar.addEventListener('mousedown', e => {
+    console.log(e)
+    e.preventDefault()
+    startingPosX = e.clientX
+    startingPosY = e.clientY
+    document.onmouseup = stopMoving
+    document.onmousemove = dragElement
+  })
+
+  function dragElement(e) {
+    e.preventDefault()
+    newPosX = startingPosX - e.clientX
+    newPosY = startingPosY - e.clientY
+    startingPosX = e.clientX
+    startingPosY = e.clientY
+    const minMaxX = Math.min(Math.max(container.offsetLeft - newPosX, 322), 1008)
+    const minMaxY = Math.min(Math.max(container.offsetTop - newPosY, 248), 504)
+    container.style.left = `${minMaxX}px`
+    container.style.top = `${minMaxY}px`
+  }
+
+  function stopMoving(e) {
+    console.log(e)
+    document.onmouseup = null
+    document.onmousemove = null
+  }
+
 }
 
 window.addEventListener('DOMContentLoaded', main)
+window.addEventListener('DOMContentLoaded', () => {
+  const clock = document.querySelector('.clock')
+  clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  setInterval(() => {
+    clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  }, 1000)
+})
+
+
