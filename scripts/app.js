@@ -69,7 +69,8 @@ function main() {
       tile.classList.add('tile-initial')
       tile.addEventListener('click', event => {
         if (tiles.every(tile => tile.clicked === false)) {
-          populateMines()
+          const clickedTile = tiles[event.target.id]
+          populateMines(clickedTile)
           revealClicked(event)
           startTimer()
           markClicked(event)
@@ -131,10 +132,13 @@ function main() {
     return workingArray.filter(index => 0 <= index && index < width * height)
   }
 
-  function populateMines() {
+  function populateMines(clickedTile) {
     mineLocations = []
     for (let i = 0; i < mines; i++) {
       placeMine()
+    }
+    if (clickedTile.adjacentTiles.some(tileIndex => mineLocations.includes(tileIndex)) || mineLocations.includes(clickedTile.index)) {
+      populateMines(clickedTile)
     }
   }
   
