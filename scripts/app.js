@@ -280,7 +280,7 @@ function main() {
     newPosY = startingPosY - e.clientY
     startingPosX = e.clientX
     startingPosY = e.clientY
-    const minMaxX = Math.min(Math.max(container.offsetLeft - newPosX, 322), 1008)
+    const minMaxX = Math.min(Math.max(container.offsetLeft - newPosX, 324), 1008)
     const minMaxY = Math.min(Math.max(container.offsetTop - newPosY, 248), 504)
     container.style.left = `${minMaxX}px`
     container.style.top = `${minMaxY}px`
