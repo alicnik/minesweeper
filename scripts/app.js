@@ -30,9 +30,7 @@ function main() {
       height = Number(e.target.dataset.height)
       width = Number(e.target.dataset.width)
       mines = Number(e.target.dataset.mines)
-      drawMinefield()
-      inGameMineCount = mines
-      updateMineCounterDisplay()
+      reset()
     })
   })
 
