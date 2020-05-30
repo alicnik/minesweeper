@@ -20,7 +20,10 @@ body {
   width: 1328px;
   position: relative;
   margin: 0 auto;
-  overflow: hidden;
+  overflow-x: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 main {
@@ -47,9 +50,11 @@ main {
   border-style: outset;
   border-width: 2px;
   border-color: white;
+  z-index: 10;
 }
 
 .title-bar {
+  position: relative;
   height: 27px;
   width: 100%;
   padding: 4px 8px 8px;
@@ -58,16 +63,40 @@ main {
     rgb(37, 82, 231),
     rgb(83, 148, 255)
   );
+  cursor: default;
 }
 
 .title-bar h1 {
   display: inline;
   padding: 13px 13px 13px 4px;
   pointer-events: none;
-  cursor: move;
+  cursor: default;
   color: white;
   font-family: "Tahoma", sans-serif;
   font-size: 0.9rem;
+}
+
+.title-bar img {
+  height: 100%;
+}
+
+.close-button {
+  position: absolute;
+  right: 3px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: 20px;
+  height: 20px;
+  border-radius: initial;
+  background-color: var(--tile-background);
+  border-style: outset;
+  border-width: 2px;
+  border-color: white;
+  cursor: default;
+}
+
+.close-button:active:hover {
+  border-style: inset;
 }
 
 .displayboard {
@@ -132,6 +161,35 @@ main {
   position: relative;
 }
 
+.desktop-icon-container {
+  position: absolute;
+  top: 400px;
+  left: 319px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+img.desktop-icon {
+  width: 55px;
+  margin: 0 auto;
+  pointer-events: initial;
+}
+
+.desktop-icon-container p {
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  color: rgb(228, 228, 228);
+  font-weight: 100;
+  cursor: default;
+  pointer-events: initial;
+}
+
+.desktop-icon-container-active {
+  background: rgba(8, 8, 145, 0.418);
+}
+
 .clock {
   font-family: sans-serif;
   font-weight: 500;
@@ -139,6 +197,7 @@ main {
   position: absolute;
   right: 232px;
   bottom: 121px;
+  pointer-events: none;
 }
 
 footer {
@@ -198,7 +257,7 @@ footer p {
 
 /* 
 
-Classes for JS Generated Elements 
+Classes for DOM Manipulation
 
 */
 
@@ -312,4 +371,16 @@ Classes for JS Generated Elements
 .shocked-smiley {
   background-image: url("../assets/shocked-smiley.png");
   background-size: cover;
+}
+
+.hidden {
+  display: none;
+}
+
+.unclickable {
+  pointer-events: none;
+}
+
+.clickable {
+  pointer-events: initial;
 }

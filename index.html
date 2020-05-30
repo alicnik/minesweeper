@@ -18,10 +18,17 @@
 
   <body>
     <main>
-      <div class="container">
-        <header class="title-bar">
-          <i class="fas fa-bomb"></i>
+      <div
+        class="container hidden"
+        data-minX="323"
+        data-maxX="1008"
+        data-minY="252"
+        data-maxY="500"
+      >
+        <header class="title-bar draggable">
+          <img src="./assets/minesweeper-icon.png" alt="minesweeper icon" />
           <h1>Minesweeper</h1>
+          <button class="close-button">X</button>
         </header>
         <div class="displayboard">
           <div class="mines-remaining">010</div>
@@ -29,6 +36,20 @@
           <div class="timer">000</div>
         </div>
         <div id="grid" class="grid"></div>
+      </div>
+      <div
+        class="desktop-icon-container"
+        data-minX="226"
+        data-maxX="1027"
+        data-minY="107"
+        data-maxY="570"
+      >
+        <img
+          class="desktop-icon draggable"
+          src="./assets/minesweeper-icon.png"
+          alt="minesweeper icon"
+        />
+        <p class="draggable">Minesweeper</p>
       </div>
       <div class="clock">12:00 PM</div>
     </main>
@@ -39,6 +60,10 @@
           data-width="9"
           data-height="9"
           data-mines="10"
+          data-minX="323"
+          data-maxX="1008"
+          data-minY="252"
+          data-maxY="500"
         ></button>
         <p>Easy</p>
       </div>
@@ -48,6 +73,10 @@
           data-width="16"
           data-height="16"
           data-mines="40"
+          data-minX="394"
+          data-maxX="938"
+          data-minY="322"
+          data-maxY="431"
         ></button>
         <p>Medium</p>
       </div>
@@ -57,6 +86,10 @@
           data-width="30"
           data-height="16"
           data-mines="99"
+          data-minX="533"
+          data-maxX="798"
+          data-minY="322"
+          data-maxY="430"
         ></button>
         <p>Hard</p>
       </div>

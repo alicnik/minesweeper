@@ -6,7 +6,11 @@ function main() {
   const smileyButton = document.querySelector('.smiley-face')
   const timer = document.querySelector('.timer')
   const grid = document.querySelector('#grid')
-
+  const container = document.querySelector('.container')
+  const closeButton = document.querySelector('.close-button')
+  const desktopIcon = document.querySelector('.desktop-icon-container')
+  const draggableElements = Array.from(document.querySelectorAll('.draggable'))
+  let startingPosX, startingPosY, newPosX, newPosY
   // PROGRAM VARIABLES
 
   let width = 9
@@ -25,6 +29,10 @@ function main() {
       height = Number(e.target.dataset.height)
       width = Number(e.target.dataset.width)
       mines = Number(e.target.dataset.mines)
+      container.dataset.minx = Number(e.target.dataset.minx)
+      container.dataset.maxx = Number(e.target.dataset.maxx)
+      container.dataset.miny = Number(e.target.dataset.miny)
+      container.dataset.maxy = Number(e.target.dataset.maxy)
       reset()
     })
   })
@@ -50,6 +58,8 @@ function main() {
   function drawMinefield() {
     tilesArray = []
     grid.innerHTML = ''
+    grid.classList.add('clickable')
+    grid.classList.remove('unclickable')
     grid.style.gridTemplate = `repeat(${height}, 1fr) / repeat(${width}, 1fr)`
     let count = 0
     for (let i = 0; i < width * height; i++) {
@@ -58,6 +68,7 @@ function main() {
       tile.classList.add('tile')
       tile.classList.add('tile-initial')
       tile.addEventListener('click', event => {
+        
         if (tilesArray.every(tile => tile.clicked === false)) {
           const clickedTile = tilesArray[event.target.dataset.index]
           populateMines()
@@ -226,7 +237,8 @@ function main() {
     })
     clearInterval(timerInterval)
     smileyButton.classList.add('sunglasses-smiley')
-    grid.style.pointerEvents = 'none'
+    grid.classList.remove('clickable')
+    grid.classList.add('unclickable')
   }
 
   function reset() {
@@ -237,7 +249,7 @@ function main() {
     timer.innerHTML = '000'
     minesRemaining.innerHTML = `0${mines}`
     inGameMineCount = mines
-    grid.style.pointerEvents = 'initial'
+    
   }
 
   function gameOver(clickedTileIndex) {
@@ -252,7 +264,8 @@ function main() {
         tilesArray[mineLocationIndex].element.classList.add('exploded-mine')
       }
     })
-    grid.style.pointerEvents = 'none'
+    grid.classList.remove('clickable')
+    grid.classList.add('unclickable')
   }
 
   function updateMineCounterDisplay() {
@@ -261,40 +274,89 @@ function main() {
 
   // DRAG AND DROP FUNCTIONALITY
 
-  const container = document.querySelector('.container')
-  const titleBar = document.querySelector('.title-bar')
-  let startingPosX, startingPosY, newPosX, newPosY
+  
 
-  titleBar.addEventListener('mousedown', e => {
-    console.log(e)
-    e.preventDefault()
-    startingPosX = e.clientX
-    startingPosY = e.clientY
-    document.onmouseup = stopMoving
-    document.onmousemove = dragElement
+  draggableElements.forEach(element => dragElement(element))
+
+  function dragElement(element) {
+    element.addEventListener('mousedown', clickToDrag)
+    const otherDraggableElement = draggableElements.find(otherElement => otherElement !== element).parentElement
+
+    function clickToDrag(e) {
+      otherDraggableElement.style.pointerEvents = 'none'
+      grid.classList.add('unclickable')
+      grid.classList.remove('clickable')
+      e.preventDefault()
+      if (e.target.tagName === 'BUTTON') return
+      startingPosX = e.clientX
+      startingPosY = e.clientY
+      element.onmousemove = dragElement
+      document.onmouseup = stopMoving
+    }
+  
+    function dragElement(e) {
+      e.preventDefault()
+      e.target.classList.add('travelling')
+      const minX = element.parentElement.dataset.minx
+      const maxX = element.parentElement.dataset.maxx
+      const minY = element.parentElement.dataset.miny
+      const maxY = element.parentElement.dataset.maxy
+      newPosX = startingPosX - e.clientX
+      newPosY = startingPosY - e.clientY
+      startingPosX = e.clientX
+      startingPosY = e.clientY
+      const minMaxX = Math.min(Math.max(element.parentElement.offsetLeft - newPosX, minX), maxX)
+      const minMaxY = Math.min(Math.max(element.parentElement.offsetTop - newPosY, minY), maxY)
+      element.parentElement.style.left = `${minMaxX}px`
+      element.parentElement.style.top = `${minMaxY}px`
+    }
+  
+    function stopMoving(e) {
+      otherDraggableElement.style.pointerEvents = 'initial'
+      if (e.target.classList.contains('travelling')) {
+        desktopIcon.classList.remove('desktop-icon-container-active')
+        e.target.classList.remove('travelling')
+      }
+      grid.classList.add('clickable')
+      grid.classList.remove('unclickable')
+      document.onmouseup = null
+      element.onmousemove = null
+    }
+  }
+
+
+
+  
+
+  // CLOSE FUNCTIONALITY AND DESKTOP ICON
+
+  
+
+  closeButton.addEventListener('click', () => {
+    setTimeout(() => {
+      container.classList.add('hidden')
+    }, 110)
+    // desktopIcon.style.pointerEvents = 'initial'
   })
 
-  function dragElement(e) {
-    e.preventDefault()
-    newPosX = startingPosX - e.clientX
-    newPosY = startingPosY - e.clientY
-    startingPosX = e.clientX
-    startingPosY = e.clientY
-    const minMaxX = Math.min(Math.max(container.offsetLeft - newPosX, 324), 1008)
-    const minMaxY = Math.min(Math.max(container.offsetTop - newPosY, 248), 504)
-    container.style.left = `${minMaxX}px`
-    container.style.top = `${minMaxY}px`
-  }
+  desktopIcon.addEventListener('mousedown', () => {
+    desktopIcon.classList.toggle('desktop-icon-container-active')
+  })
 
-  function stopMoving(e) {
-    console.log(e)
-    document.onmouseup = null
-    document.onmousemove = null
-  }
+  document.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('desktop-icon')) {
+      desktopIcon.classList.remove('desktop-icon-container-active')
+    }
+  })
+
+  desktopIcon.addEventListener('dblclick', () => {
+    container.classList.remove('hidden')
+  })
 
 }
 
 window.addEventListener('DOMContentLoaded', main)
+
 window.addEventListener('DOMContentLoaded', () => {
   const clock = document.querySelector('.clock')
   clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
@@ -302,5 +364,4 @@ window.addEventListener('DOMContentLoaded', () => {
     clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
   }, 1000)
 })
-
 
