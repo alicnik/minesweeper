@@ -374,3 +374,42 @@ Classes for DOM Manipulation
 .clickable {
   pointer-events: initial;
 }
+
+/* Mobile Layout */
+
+@media only screen and (max-width: 500px) {
+  body {
+    height: 100vh;
+    width: 100vw;
+    background-image: url("../assets/phone-background.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-color: black;
+  }
+  main {
+    background-image: none;
+  }
+
+  .desktop-icon-container {
+    height: 90px;
+    width: 75px;
+    left: 280px;
+    top: 236px;
+    background-image: url("../assets/app-icon.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .desktop-icon-container img {
+    display: none;
+  }
+
+  .clock {
+    display: none;
+  }
+
+  footer {
+    display: none;
+  }
+}
