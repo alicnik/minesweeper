@@ -348,10 +348,11 @@ function main() {
 
   // CLOSE FUNCTIONALITY AND DESKTOP ICON
 
-  // Set timeout used as window removal was too quick for human eye
+  // Set timeout used as window removal was too quick for human eye. Resets game otherwise game runs in background.
   closeButton.addEventListener('click', () => {
     setTimeout(() => {
       container.classList.add('hidden')
+      reset()
     }, 110)
   })
 
