@@ -255,7 +255,7 @@ function reset() {
   clearInterval(timerInterval)
   smileyButton.classList = 'smiley-face'
   timer.innerHTML = '000'
-  minesRemaining.innerHTML = `0${mines}`
+  minesRemaining.innerHTML = mines
   inGameMineCount = mines
   drawMinefield()
 }
@@ -306,11 +306,11 @@ function dragElement(element) {
     // Record where click started
     startingPosX = e.clientX
     startingPosY = e.clientY
-    element.onmousemove = dragElement
+    element.onmousemove = moveElement
     document.onmouseup = stopMoving
   }
   
-  function dragElement(e) {
+  function moveElement(e) {
     e.preventDefault()
     e.target.classList.add('travelling')
     // Destructuring assigment to lowercase as dataset does not allow uppercase letters
@@ -377,15 +377,4 @@ window.addEventListener('DOMContentLoaded', () => {
   setInterval(() => {
     clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
   }, 1000)
-})
-
-const arrayBtn = document.querySelector('.array')
-const minesBtn = document.querySelector('.mines')
-
-arrayBtn.addEventListener('click', () => {
-  console.log(tilesArray)
-})
-
-minesBtn.addEventListener('click', () => {
-  console.log(mineLocations)
 })

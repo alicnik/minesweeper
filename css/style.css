@@ -16,6 +16,9 @@
 }
 
 body {
+  background-image: url("/assets/office-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 789px;
   width: 1328px;
   position: relative;
@@ -373,6 +376,14 @@ Classes for DOM Manipulation
 
 .clickable {
   pointer-events: initial;
+}
+
+/* Larger Screens */
+
+@media only screen and (min-height: 850px) {
+  body {
+    margin-top: 5vh;
+  }
 }
 
 /* Mobile Layout */
