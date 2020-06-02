@@ -47,6 +47,10 @@ document.addEventListener('mouseup', () => {
   smileyButton.classList.remove('shocked-smiley')
 })
 
+grid.addEventListener('change', () => {
+  console.log('change')
+})
+
 // Reset board when Smiley Button clicked
 smileyButton.addEventListener('click', reset)
 
@@ -143,6 +147,13 @@ function adjacentTiles(width, height, index) {
   }
   return workingArray.filter(tileIndex => 0 <= tileIndex && tileIndex < width * height)
 }
+
+//Simultaneously add and remove a class from a given element
+function addAndRemoveClass(element, classToAdd, classToRemove) {
+  element.classList.add(classToAdd)
+  element.classList.remove(classToRemove)
+}
+
 
 // GENERAL GAME FUNCTIONS
 
@@ -279,11 +290,6 @@ function adjacentMineCount(tileIndex) {
   return tilesArray[tileIndex].adjacentTiles.reduce((count, adjacentTileIndex) => {
     return mineLocations.includes(adjacentTileIndex) ? ++count : count
   }, 0)
-}
-
-function addAndRemoveClass(element, classToAdd, classToRemove) {
-  element.classList.add(classToAdd)
-  element.classList.remove(classToRemove)
 }
 
 // DRAG AND DROP FUNCTIONALITY

@@ -19,7 +19,7 @@ body {
   background-image: url("/assets/office-background.png");
   background-size: cover;
   background-repeat: no-repeat;
-  height: 789px;
+  height: 100vh;
   width: 1328px;
   position: relative;
   margin: 0 auto;
@@ -35,7 +35,7 @@ main {
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
-  height: 100%;
+  height: 789px;
   position: relative;
 }
 
@@ -70,16 +70,18 @@ main {
 
 .title-bar h1 {
   display: inline;
-  padding: 13px 13px 13px 4px;
   pointer-events: none;
   cursor: default;
   color: white;
   font-family: "Tahoma", sans-serif;
   font-size: 0.9rem;
+  margin-left: 20px;
 }
 
 .title-bar img {
-  height: 100%;
+  height: 73%;
+  position: absolute;
+  left: 4px;
 }
 
 .close-button {
@@ -94,6 +96,7 @@ main {
   border-color: white;
   font-size: 0.8rem;
   font-weight: 500;
+  font-family: sans-serif;
   cursor: default;
 }
 
@@ -197,7 +200,7 @@ footer {
   position: absolute;
   right: -630px;
   width: 80%;
-  bottom: 15px;
+  top: 715px;
   display: flex;
   justify-content: end;
 }
@@ -392,27 +395,52 @@ Classes for DOM Manipulation
   body {
     height: 100vh;
     width: 100vw;
-    background-image: url("../assets/phone-background.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-color: black;
+    background-color: var(--tile-background);
+    background-image: none;
   }
+
   main {
     background-image: none;
   }
 
-  .desktop-icon-container {
-    height: 90px;
-    width: 75px;
-    left: 280px;
-    top: 236px;
-    background-image: url("../assets/app-icon.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+  .container {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    z-index: initial;
+    border: none;
   }
 
-  .desktop-icon-container img {
+  .container::before {
+    content: "Minesweeper";
+    font-size: 13vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    position: absolute;
+    left: 50%;
+    top: 4%;
+    transform: perspective(300px) translateX(-34%) rotateZ(-6deg) rotateY(30deg)
+      skewX(5deg);
+    background-image: linear-gradient(
+      to right,
+      rgb(243, 37, 37),
+      rgb(56, 56, 209),
+      rgb(43, 189, 67)
+    );
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .title-bar {
+    display: none;
+  }
+
+  .displayboard {
+    /* width: 324px; */
+  }
+
+  .desktop-icon-container {
     display: none;
   }
 
@@ -421,6 +449,25 @@ Classes for DOM Manipulation
   }
 
   footer {
+    display: flex;
+    width: 130px;
+    bottom: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  footer .option:last-child {
     display: none;
+  }
+
+  @keyframes grow {
+    from {
+      height: 0;
+      width: 0;
+    }
+    to {
+      height: 100vh;
+      width: 100vw;
+    }
   }
 }
