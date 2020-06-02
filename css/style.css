@@ -215,7 +215,8 @@ footer {
   align-items: center;
 }
 
-.difficulty {
+.difficulty,
+.mobile-flag-button {
   height: 30px;
   width: 45px;
   border-radius: 50%;
@@ -226,13 +227,15 @@ footer {
     0 2px 2px -1px rgba(255, 253, 253, 0.575), 0 1px 0 rgba(0, 0, 0, 0.3) inset;
 }
 
-.difficulty:active:hover {
+.difficulty:active:hover,
+.mobile-flag-button:active:hover {
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset,
     5px 0 5px -3px rgba(0, 0, 0, 0.2) inset,
     -5px 0 5px -3px rgba(0, 0, 0, 0.2) inset;
 }
 
-.difficulty::after {
+.difficulty::after,
+.mobile-flag-button::after {
   content: "";
   width: 47px;
   height: 32px;
@@ -241,6 +244,10 @@ footer {
   position: absolute;
   bottom: -2px;
   right: -2px;
+}
+
+.mobile-flag {
+  display: none;
 }
 
 footer p {
@@ -397,29 +404,19 @@ Classes for DOM Manipulation
     width: 100vw;
     background-color: var(--tile-background);
     background-image: none;
-  }
-
-  main {
-    background-image: none;
-  }
-
-  .container {
     display: flex;
-    height: 100vh;
-    justify-content: center;
-    z-index: initial;
-    border: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.5vh 0;
   }
 
-  .container::before {
+  body::before {
     content: "Minesweeper";
-    font-size: 13vw;
+    font-size: 15vw;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    position: absolute;
-    left: 50%;
-    top: 4%;
-    transform: perspective(300px) translateX(-34%) rotateZ(-6deg) rotateY(30deg)
+    transform: perspective(300px) rotateZ(-6deg) translateX(15vw) rotateY(30deg)
       skewX(5deg);
     background-image: linear-gradient(
       to right,
@@ -432,12 +429,27 @@ Classes for DOM Manipulation
     background-clip: text;
   }
 
-  .title-bar {
-    display: none;
+  main {
+    background-image: none;
+    position: static;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .displayboard {
-    /* width: 324px; */
+  .container {
+    display: flex;
+    height: auto;
+    justify-content: center;
+    z-index: initial;
+    border: none;
+    position: static;
+    transform: none;
+  }
+
+  .title-bar {
+    display: none;
   }
 
   .desktop-icon-container {
@@ -449,25 +461,25 @@ Classes for DOM Manipulation
   }
 
   footer {
+    position: static;
+    width: auto;
+    height: auto;
+  }
+
+  .mobile-flag {
     display: flex;
-    width: 130px;
-    bottom: 13px;
-    left: 50%;
-    transform: translateX(-50%);
+  }
+
+  .mobile-flag-button {
+    overflow: hidden;
+  }
+
+  .mobile-flag-button img {
+    transform: rotateZ(-130deg) scale(1.5) translate(-1px, -2px);
+    opacity: 0.3;
   }
 
   footer .option:last-child {
     display: none;
-  }
-
-  @keyframes grow {
-    from {
-      height: 0;
-      width: 0;
-    }
-    to {
-      height: 100vh;
-      width: 100vw;
-    }
   }
 }

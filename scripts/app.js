@@ -9,6 +9,8 @@ const closeButton = document.querySelector('.close-button')
 const grid = document.querySelector('#grid')
 const desktopIcon = document.querySelector('.desktop-icon-container')
 const draggableElements = Array.from(document.querySelectorAll('.draggable'))
+const mobileFlagButton = document.querySelector('.mobile-flag-button')
+const mobileFlagButtonImg = document.querySelector('.mobile-flag-button-image')
 
 // PROGRAM VARIABLES
 
@@ -19,6 +21,7 @@ let inGameMineCount = mines
 let tilesArray = []
 let mineLocations = []
 let timerInterval, startingPosX, startingPosY, posChangeX, posChangeY
+let mobileFlagActive = false
   
 // EVENT LISTENERS
 
@@ -53,6 +56,26 @@ grid.addEventListener('change', () => {
 
 // Reset board when Smiley Button clicked
 smileyButton.addEventListener('click', reset)
+
+// Switch to flag placement in mobile
+
+mobileFlagButton.addEventListener('click', () => {
+  if (!mobileFlagActive){
+    mobileFlagActive = true
+    mobileFlagButtonImg.style.opacity = 1
+    tilesArray.forEach(tile => {
+      tile.element.removeEventListener('click', clickTile)
+      tile.element.addEventListener('click', flagTile)
+    })
+  } else {
+    mobileFlagActive = false
+    mobileFlagButtonImg.style.opacity = 0.3
+    tilesArray.forEach(tile => {
+      tile.element.addEventListener('click', clickTile)
+      tile.element.removeEventListener('click', flagTile)
+    })
+  }
+})
 
 // FIRST DRAW
 
@@ -206,7 +229,10 @@ function revealExtended(tileIndex) {
 
 function addOrRemoveFlag(clickedTile) {
   // Prevent flag placement on first click
-  if (tilesArray.every(tileObj => !tileObj.clicked)) return
+  if (tilesArray.every(tile => !tile.clicked)) {
+    alert('You can\'t place a flag yet, please uncover a tile first')
+    return
+  }
   // Place flag only on tiles that are not flagged and have not been clicked; remove flag from tiles that have not been clicked (to avoid changing state of clicked tile)
   if (!tilesArray[clickedTile.dataset.index].isFlagged && !tilesArray[clickedTile.dataset.index].clicked) {
     addAndRemoveClass(clickedTile, 'flag', 'tile-initial')
