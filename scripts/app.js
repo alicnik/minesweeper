@@ -47,9 +47,6 @@ let mobileFlagActive = false
 difficultyButtons.forEach(button => {
   button.addEventListener('click', (e) => {
     ({ height, width, mines } = e.target.dataset)
-    // for (const attribute in container.dataset) {
-    //   container.dataset[attribute] = e.target.dataset[attribute]
-    // }
     calculateGameContainerDragBoundaries()
     recentreContainer()
     reset()
@@ -120,6 +117,7 @@ customOKButton.addEventListener('click', (e) => {
 
 customCancelButton.addEventListener('click', (e) => {
   e.preventDefault()
+  customInputArray.forEach(input => input.value = '')
   customPopup.classList.add('hidden')
 })
 
