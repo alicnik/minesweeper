@@ -496,3 +496,15 @@ window.addEventListener('DOMContentLoaded', () => {
     clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
   }, 1000)
 })
+
+// EASTER EGGS
+const outlookExpressIcon = document.querySelector('.outlook')
+const ieIcon = document.querySelector('.ie')
+
+outlookExpressIcon.addEventListener('dblclick', () => {
+  window.location.href = 'mailto:bill.gates@microsoft.com?subject=I%20love%20minesweeper!&body=Can%20you%20give%20Ali%20a%20job?'
+})
+
+ieIcon.addEventListener('dblclick', () => {
+  alert('No.')
+})

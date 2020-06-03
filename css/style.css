@@ -301,7 +301,7 @@ footer {
 }
 
 .plus-minus-button-text {
-  transform: translate(-0.5px, -1px);
+  transform: translateY(-1px);
 }
 
 footer p {
@@ -414,6 +414,23 @@ footer p {
   font-weight: 500;
   color: rgb(38, 38, 38);
   text-shadow: 0px 0px 1px rgb(29, 29, 29);
+}
+
+.outlook,
+.ie {
+  position: absolute;
+  width: 50px;
+  height: 80px;
+}
+
+.outlook {
+  top: 296px;
+  left: 332px;
+}
+
+.ie {
+  left: 241px;
+  top: 461px;
 }
 
 /* 
