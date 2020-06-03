@@ -16,7 +16,8 @@ const monitorButtons = document.querySelectorAll('.monitor-button')
 const mobileFlagButton = document.querySelector('.mobile-flag-button')
 const mobileFlagButtonImg = document.querySelector('.mobile-flag-button-image')
 const taskbarTile = document.querySelector('.taskbar-tile')
-// Custom
+
+// Custom Board Size Elements
 const customPopup = document.querySelector('.custom-popup')
 const customTriggerButton = document.querySelector('.custom-button')
 const customOKButton = document.querySelector('.custom-ok-button')
@@ -50,6 +51,7 @@ difficultyButtons.forEach(button => {
     //   container.dataset[attribute] = e.target.dataset[attribute]
     // }
     calculateGameContainerDragBoundaries()
+    recentreContainer()
     reset()
   })
 })
@@ -71,10 +73,6 @@ grid.addEventListener('mousedown', (e) => {
 
 document.addEventListener('mouseup', () => {
   smileyButton.classList.remove('shocked-smiley')
-})
-
-grid.addEventListener('change', () => {
-  console.log('change')
 })
 
 // Reset board when Smiley Button clicked
@@ -376,7 +374,6 @@ function adjacentMineCount(tileIndex) {
 }
 
 function calculateGameContainerDragBoundaries() {
-  console.log(width)
   const containerWidth = width * 20 + 20
   const containerHeight = height * 20 + 95
   container.dataset.minx = (containerWidth / 2) + 223

@@ -16,7 +16,7 @@
 }
 
 body {
-  background-image: url("/assets/office-background.png");
+  background-image: url("../assets/office-background.png");
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;
@@ -46,7 +46,7 @@ main {
   justify-content: space-evenly;
   align-items: center;
   position: absolute;
-  top: 50%;
+  top: 49%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-style: outset;
@@ -309,7 +309,7 @@ footer p {
   font-weight: 800;
   font-size: 0.8rem;
   color: rgb(70, 69, 69);
-  text-shadow: 0 -0.1px 0 rgba(0, 0, 0, 0.5);
+  text-shadow: 0 -0.1px 0 rgba(45, 45, 45, 0.5);
 }
 
 .custom-popup {
