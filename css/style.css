@@ -74,6 +74,8 @@ main {
   cursor: default;
   color: white;
   font-family: "Tahoma", sans-serif;
+  font-weight: 500;
+  text-shadow: 0 0 1px white;
   font-size: 0.9rem;
   margin-left: 20px;
 }
@@ -84,7 +86,8 @@ main {
   left: 4px;
 }
 
-.close-button {
+.close-button,
+.minimise-button {
   position: absolute;
   right: 3px;
   width: 20px;
@@ -97,10 +100,16 @@ main {
   font-size: 0.8rem;
   font-weight: 500;
   font-family: sans-serif;
+  text-shadow: 0 0 1px grey;
   cursor: default;
 }
 
-.close-button:active:hover {
+.minimise-button {
+  right: 26px;
+}
+
+.close-button:active:hover,
+.minimise-button:active:hover {
   border-style: inset;
 }
 
@@ -177,7 +186,8 @@ img.desktop-icon {
 .desktop-icon-container p {
   font-family: sans-serif;
   font-size: 0.8rem;
-  color: rgb(228, 228, 228);
+  color: rgb(193, 191, 191);
+  text-shadow: 0 0 1px rgb(210, 210, 210);
   font-weight: 100;
   cursor: default;
   pointer-events: initial;
@@ -191,21 +201,36 @@ img.desktop-icon {
   font-family: sans-serif;
   font-weight: 500;
   font-size: 0.8rem;
+  color: rgb(40, 40, 40);
+  text-shadow: 0 0 1px grey;
   position: absolute;
   right: 232px;
   bottom: 121px;
 }
 
 footer {
-  position: absolute;
-  right: -630px;
-  width: 80%;
-  top: 715px;
+  position: relative;
+  top: -75px;
+  width: 65%;
+  margin: 0 auto;
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
 }
 
-.option {
+.monitor-button {
+  cursor: pointer;
+}
+
+.custom-controls {
+  display: flex;
+}
+
+.options {
+  display: flex;
+}
+
+.option,
+.custom-control {
   margin: 0 10px;
   height: 60px;
   width: 50px;
@@ -216,7 +241,8 @@ footer {
 }
 
 .difficulty,
-.mobile-flag-button {
+.mobile-flag-button,
+.custom-button {
   height: 30px;
   width: 45px;
   border-radius: 50%;
@@ -228,14 +254,16 @@ footer {
 }
 
 .difficulty:active:hover,
-.mobile-flag-button:active:hover {
+.mobile-flag-button:active:hover,
+.custom-button:active:hover {
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset,
     5px 0 5px -3px rgba(0, 0, 0, 0.2) inset,
     -5px 0 5px -3px rgba(0, 0, 0, 0.2) inset;
 }
 
 .difficulty::after,
-.mobile-flag-button::after {
+.mobile-flag-button::after,
+.custom-button::after {
   content: "";
   width: 47px;
   height: 32px;
@@ -250,17 +278,147 @@ footer {
   display: none;
 }
 
+.plus-button,
+.minus-button {
+  width: 15px;
+  height: 15px;
+  border: 1px grey outset;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  background-color: transparent;
+}
+
+.plus-button {
+  transform: translate(10px, -2px);
+}
+.minus-button {
+  transform: translate(-9px, -1px);
+}
+
+.plus-button:active:hover,
+.minus-button:active:hover {
+  border: 1px grey inset;
+}
+
+.plus-minus-button-text {
+  transform: translate(-0.5px, -1px);
+}
+
 footer p {
   font-family: sans-serif;
   font-weight: 800;
   font-size: 0.8rem;
-  color: rgb(51, 49, 49);
+  color: rgb(70, 69, 69);
   text-shadow: 0 -0.1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.custom-popup {
+  width: 220px;
+  background: white;
+  border: 2px rgb(208, 208, 208) outset;
+  font-family: "Tahoma", sans-serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+}
+
+.custom-popup-title-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 25px;
+  padding-left: 4px;
+  background-image: linear-gradient(
+    to right,
+    rgb(37, 82, 231),
+    rgb(83, 148, 255)
+  );
+}
+
+.custom-popup-title-bar img {
+  height: 15px;
+  margin-right: 5px;
+}
+
+.custom-popup-title-bar h3 {
+  color: white;
+  font-weight: 400;
+  text-shadow: 0 0 1px white;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.custom-popup form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100px;
+  font-size: 0.7rem;
+  background-color: var(--tile-background);
+  padding: 15px 1px;
+}
+
+.custom-input-container {
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-input-container input {
+  padding: 3px;
+  border-radius: none;
+  border: 2px rgb(227, 225, 225) inset;
+  width: 50px;
+}
+
+.custom-popup form button {
+  height: 24px;
+  width: 65px;
+  padding: 2px 5px;
+  border: 2px rgb(210, 207, 207) outset;
+}
+
+.taskbar-tile {
+  position: absolute;
+  bottom: 116px;
+  left: 300px;
+  height: 25px;
+  width: 135px;
+  display: flex;
+  align-items: center;
+  background: #b1b1b1;
+  border: 2px rgb(227, 227, 227) outset;
+  box-shadow: 1px 1px 2px rgb(41, 41, 41);
+  padding: 1px 0 0 4px;
+}
+
+.taskbar-tile:active:hover {
+  border: 2px rgb(218, 218, 218) inset;
+  box-shadow: none;
+}
+
+.taskbar-tile img {
+  height: 15px;
+  margin-right: 3px;
+}
+
+.taskbar-tile h2 {
+  display: inline-block;
+  font-family: "Tahoma", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgb(38, 38, 38);
+  text-shadow: 0px 0px 1px rgb(29, 29, 29);
 }
 
 /* 
 
-Classes for DOM Manipulation
+Classes for DOM Manipulation ------------------------------------------------------------------------------------------------ 
 
 */
 
@@ -388,7 +546,11 @@ Classes for DOM Manipulation
   pointer-events: initial;
 }
 
-/* Larger Screens */
+/* 
+
+Larger Screens -------------------------------------------------------------------------------------------------------
+
+*/
 
 @media only screen and (min-height: 850px) {
   body {
@@ -396,7 +558,12 @@ Classes for DOM Manipulation
   }
 }
 
-/* Mobile Layout */
+/* 
+
+Mobile Layout ---------------------------------------------------------------------------------------------------------
+
+
+*/
 
 @media only screen and (max-width: 500px) {
   body {
@@ -415,7 +582,7 @@ Classes for DOM Manipulation
     font-size: 15vw;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    transform: perspective(300px) rotateZ(-6deg) translateX(15vw) rotateY(30deg)
+    transform: perspective(300px) rotateZ(-6deg) translateX(12vw) rotateY(30deg)
       skewX(5deg);
     background-image: linear-gradient(
       to right,
@@ -476,6 +643,10 @@ Classes for DOM Manipulation
   .mobile-flag-button img {
     transform: rotateZ(-130deg) scale(1.5) translate(-1px, -2px);
     opacity: 0.3;
+  }
+
+  .custom-controls {
+    display: none;
   }
 
   footer .option:last-child {

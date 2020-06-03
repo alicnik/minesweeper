@@ -12,7 +12,7 @@ As this was a vehicle for DOM manipulation, the HTML structure is simple with fe
 
 ## CSS
 
-Design was modelled on the classic Windows 95 desktop, with a photo of an old CRT monitor merged with a screenshot of the original desktop layout. A Minesweeper "icon" was added to the desktop for authenticity and additional interaction. To ensure authenticity, user select and cursor: pointer have been removed throughout as a style choice. Borders are inset/outset white 2px throughout, per original game.
+Design was modelled on the classic Windows 95 desktop, with a photo of an old CRT monitor merged with a screenshot of the original desktop layout. A Minesweeper "icon" was added to the desktop for authenticity and additional interaction. To ensure authenticity, user select and cursor: pointer have been removed throughout as a style choice. Borders are `inset/outset white 2px` throughout, per original game.
 
 Smiley face button designed for this game with influence from Watchmen on game over. Sporadic use of active and hover pseudo-classes to mimic original functionality and UI.
 

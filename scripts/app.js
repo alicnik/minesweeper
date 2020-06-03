@@ -1,3 +1,5 @@
+
+
 // DOM ELEMENTS
 
 const difficultyButtons = document.querySelectorAll('.difficulty')
@@ -5,12 +7,26 @@ const container = document.querySelector('.container')
 const minesRemaining = document.querySelector('.mines-remaining')
 const smileyButton = document.querySelector('.smiley-face')
 const timer = document.querySelector('.timer')
+const minimiseButton = document.querySelector('.minimise-button')
 const closeButton = document.querySelector('.close-button')
 const grid = document.querySelector('#grid')
 const desktopIcon = document.querySelector('.desktop-icon-container')
 const draggableElements = Array.from(document.querySelectorAll('.draggable'))
+const monitorButtons = document.querySelectorAll('.monitor-button')
 const mobileFlagButton = document.querySelector('.mobile-flag-button')
 const mobileFlagButtonImg = document.querySelector('.mobile-flag-button-image')
+const taskbarTile = document.querySelector('.taskbar-tile')
+// Custom
+const customPopup = document.querySelector('.custom-popup')
+const customTriggerButton = document.querySelector('.custom-button')
+const customOKButton = document.querySelector('.custom-ok-button')
+const customCancelButton = document.querySelector('.custom-cancel-button')
+const customHeightInput = document.querySelector('#height-input')
+const customWidthInput = document.querySelector('#width-input')
+const customMinesInput = document.querySelector('#mines-input')
+const customInputArray = [customHeightInput, customWidthInput, customMinesInput]
+const customPlusButtons = document.querySelectorAll('.plus-button')
+const customMinusButtons = document.querySelectorAll('.minus-button')
 
 // PROGRAM VARIABLES
 
@@ -20,7 +36,8 @@ let mines = 10
 let inGameMineCount = mines
 let tilesArray = []
 let mineLocations = []
-let timerInterval, startingPosX, startingPosY, posChangeX, posChangeY
+// timerInterval (for game timer) declared here so that interval can be cleared outside setInterval
+let timerInterval
 let mobileFlagActive = false
   
 // EVENT LISTENERS
@@ -28,14 +45,20 @@ let mobileFlagActive = false
 // Change board size and assign drag and drop limitations
 difficultyButtons.forEach(button => {
   button.addEventListener('click', (e) => {
+    ({ height, width, mines } = e.target.dataset)
+    // for (const attribute in container.dataset) {
+    //   container.dataset[attribute] = e.target.dataset[attribute]
+    // }
+    calculateGameContainerDragBoundaries()
+    reset()
+  })
+})
+
+monitorButtons.forEach(button => {
+  button.addEventListener('mousedown', () => {
     const audio = new Audio('../assets/button-press.mp3')
     audio.volume = 0.25
-    audio.play();
-    ({ height, width, mines } = e.target.dataset)
-    for (const attribute in container.dataset) {
-      container.dataset[attribute] = e.target.dataset[attribute]
-    }
-    reset()
+    audio.play()
   })
 })
 
@@ -76,6 +99,40 @@ mobileFlagButton.addEventListener('click', () => {
     })
   }
 })
+
+// Custom
+
+customTriggerButton.addEventListener('click', () => {
+  customPopup.classList.remove('hidden')
+})
+
+customOKButton.addEventListener('click', (e) => {
+  e.preventDefault()
+  height = customHeightInput.value || height
+  width = customWidthInput.value || width
+  mines = customMinesInput.value || mines
+  calculateGameContainerDragBoundaries()
+  customInputArray.forEach(input => input.value = '')
+  setTimeout(() => {
+    customPopup.classList.add('hidden')
+  }, 100)
+  recentreContainer()
+  reset()
+})
+
+customCancelButton.addEventListener('click', (e) => {
+  e.preventDefault()
+  customPopup.classList.add('hidden')
+})
+
+customPlusButtons.forEach(button => {
+  button.addEventListener('click', () => customInputArray[button.dataset.customElementIndex].stepUp())
+})
+
+customMinusButtons.forEach(button => {
+  button.addEventListener('click', () => customInputArray[button.dataset.customElementIndex].stepDown())
+})
+
 
 // FIRST DRAW
 
@@ -318,6 +375,21 @@ function adjacentMineCount(tileIndex) {
   }, 0)
 }
 
+function calculateGameContainerDragBoundaries() {
+  console.log(width)
+  const containerWidth = width * 20 + 20
+  const containerHeight = height * 20 + 95
+  container.dataset.minx = (containerWidth / 2) + 223
+  container.dataset.maxx = 1108 - (containerWidth / 2) 
+  container.dataset.miny = (containerHeight / 2) + 111
+  container.dataset.maxy = 638 - (containerHeight / 2)
+}
+
+function recentreContainer() {
+  container.style.left = '50%'
+  container.style.top = '49%'
+}
+
 // DRAG AND DROP FUNCTIONALITY
 
 // Because positioning limits on the background were calculated in relation to the container of the element being moved, many of the variables are calculated by reference to the parentElement. This was also necessary because the title bar of the minesweeper window is a child of the main container and it is the whole container that needs to move, but only when the title bar is dragged.
@@ -325,17 +397,21 @@ function adjacentMineCount(tileIndex) {
 draggableElements.forEach(element => dragElement(element))
 
 function dragElement(element) {
+  let startingPosX, startingPosY, posChangeX, posChangeY
+
   element.addEventListener('mousedown', clickToDrag)
   // Because of z-index in CSS, dragging the desktop icon under the minesweeper window caused the event to change to the minesweeper window, which would then start moving instead of the desktop icon. To resolve this, pointer events were disabled for the other element.
-  const otherDraggableElement = draggableElements.find(otherElement => otherElement !== element).parentElement
+  const otherDraggableElements = draggableElements.filter(otherElement => otherElement !== element)
 
   function clickToDrag(e) {
-    otherDraggableElement.style.pointerEvents = 'none'
-    addAndRemoveClass(grid, 'unclickable', 'clickable')
     e.preventDefault()
-    // Clicking close button on title bar should not drag window
     if (e.target.tagName === 'BUTTON') return
-    // Record where click started
+    otherDraggableElements.forEach(element => {
+      element.parentElement.style.pointerEvents = 'none'
+    })
+    addAndRemoveClass(grid, 'unclickable', 'clickable')
+    // Clicking close button on title bar should not drag window
+    // Record where click started on x and y axis
     startingPosX = e.clientX
     startingPosY = e.clientY
     element.onmousemove = moveElement
@@ -345,7 +421,7 @@ function dragElement(element) {
   function moveElement(e) {
     e.preventDefault()
     e.target.classList.add('travelling')
-    // Destructuring assigment to lowercase as dataset does not allow uppercase letters
+    // Destructuring assigment to lowercase as dataset does not allow uppercase letters/camelCase
     const { minx, maxx, miny, maxy } = element.parentElement.dataset
     // Measure change in x and y values to establish where window is going to
     posChangeX = startingPosX - e.clientX
@@ -363,7 +439,7 @@ function dragElement(element) {
   
   // Reinstate pointer events, remove relevant classes, and set event listeners to null
   function stopMoving(e) {
-    otherDraggableElement.style.pointerEvents = 'initial'
+    otherDraggableElements.forEach(element => element.parentElement.style.pointerEvents = 'initial')
     if (e.target.classList.contains('travelling')) {
       desktopIcon.classList.remove('desktop-icon-container-active')
       e.target.classList.remove('travelling')
@@ -374,14 +450,26 @@ function dragElement(element) {
   }
 }
 
-// CLOSE FUNCTIONALITY AND DESKTOP ICON
+// CLOSE/MINIMISE FUNCTIONALITY AND DESKTOP ICON
 
 // Set timeout used as window removal was too quick for human eye. Resets game otherwise game runs in background.
 closeButton.addEventListener('click', () => {
   setTimeout(() => {
     container.classList.add('hidden')
+    taskbarTile.classList.add('hidden')
     reset()
   }, 110)
+})
+
+minimiseButton.addEventListener('click', () => {
+  setTimeout(() => {
+    container.classList.add('hidden')
+    reset()
+  }, 110)
+})
+
+taskbarTile.addEventListener('click', () => {
+  container.classList.toggle('hidden')
 })
 
 // Functionality to add/remove "selection highlighting" of desktop icon
@@ -397,6 +485,9 @@ document.addEventListener('click', (e) => {
 
 desktopIcon.addEventListener('dblclick', () => {
   container.classList.remove('hidden')
+  setTimeout(() => {
+    taskbarTile.classList.remove('hidden')
+  }, 34)
 })
 
 // ON LOAD EVENT LISTENERS

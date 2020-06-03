@@ -26,6 +26,7 @@
         <header class="title-bar draggable">
           <img src="./assets/minesweeper-icon.png" alt="minesweeper icon" />
           <h1>Minesweeper</h1>
+          <button class="minimise-button">_</button>
           <button class="close-button">X</button>
         </header>
         <div class="displayboard">
@@ -35,6 +36,62 @@
         </div>
         <div id="grid" class="grid"></div>
       </section>
+
+      <div
+        class="custom-popup hidden"
+        data-minx="332"
+        data-maxx="998"
+        data-miny="172"
+        data-maxy="579"
+      >
+        <div class="custom-popup-title-bar draggable">
+          <img src="/assets/window-icon.png" alt="" />
+          <h3>Custom Layout</h3>
+        </div>
+        <form>
+          <div class="custom-input-container">
+            <label for="height">Height:</label>
+            <input
+              type="number"
+              name="height"
+              class="custom-input"
+              id="height-input"
+              value=""
+              min="3"
+              max="20"
+              placeholder="3-20"
+            />
+          </div>
+          <div class="custom-input-container">
+            <label for="width">Width:</label>
+            <input
+              type="number"
+              name="width"
+              class="custom-input"
+              id="width-input"
+              value=""
+              min="9"
+              max="40"
+              placeholder="9-40"
+            />
+          </div>
+          <div class="custom-input-container">
+            <label for="mines">Mines:</label>
+            <input
+              type="number"
+              name="width"
+              class="custom-input"
+              id="mines-input"
+              value=""
+              min="1"
+              max="99"
+              placeholder="1-99"
+            />
+          </div>
+          <button class="custom-ok-button" type="submit">OK</button>
+          <button class="custom-cancel-button">Cancel</button>
+        </form>
+      </div>
       <div
         class="desktop-icon-container"
         data-minx="226"
@@ -49,57 +106,127 @@
         />
         <p class="draggable">Minesweeper</p>
       </div>
+      <div class="taskbar-tile hidden">
+        <img src="/assets/minesweeper-icon.png" alt="minesweeper-icon" />
+        <h2>Minesweeper</h2>
+      </div>
       <div class="clock">12:00 PM</div>
     </main>
+
     <footer>
-      <div class="option">
-        <button
-          class="difficulty"
-          data-width="9"
-          data-height="9"
-          data-mines="10"
-          data-minx="323"
-          data-maxx="1008"
-          data-miny="252"
-          data-maxy="500"
-        ></button>
-        <p>Easy</p>
+      <div class="custom-controls">
+        <div class="custom-control custom-trigger">
+          <button class="monitor-button custom-button"></button>
+          <p>Custom</p>
+        </div>
+        <div class="custom-control custom-height">
+          <button
+            data-custom-element-index="0"
+            class="monitor-button plus-button custom-height-up"
+          >
+            <p class="plus-minus-button-text">
+              +
+            </p>
+          </button>
+          <button
+            data-custom-element-index="0"
+            class="monitor-button minus-button custom-height-down"
+          >
+            <p class="plus-minus-button-text">
+              -
+            </p>
+          </button>
+          <p>Height</p>
+        </div>
+        <div class="custom-control custom-width">
+          <button
+            data-custom-element-index="1"
+            class="monitor-button plus-button custom-width-up"
+          >
+            <p class="plus-minus-button-text">
+              +
+            </p>
+          </button>
+          <button
+            data-custom-element-index="1"
+            class="monitor-button minus-button custom-width-down"
+          >
+            <p class="plus-minus-button-text">
+              -
+            </p>
+          </button>
+          <p>Width</p>
+        </div>
+        <div class="custom-control custom-mines">
+          <button
+            data-custom-element-index="2"
+            class="monitor-button plus-button custom-mines-up"
+          >
+            <p class="plus-minus-button-text">
+              +
+            </p>
+          </button>
+          <button
+            data-custom-element-index="2"
+            class="monitor-button minus-button custom-mines-down"
+          >
+            <p class="plus-minus-button-text">
+              -
+            </p>
+          </button>
+          <p>Mines</p>
+        </div>
       </div>
-      <div class="option">
-        <button
-          class="difficulty"
-          data-width="16"
-          data-height="16"
-          data-mines="40"
-          data-minx="394"
-          data-maxx="938"
-          data-miny="322"
-          data-maxy="431"
-        ></button>
-        <p>Medium</p>
-      </div>
-      <div class="option mobile-flag">
-        <button class="mobile-flag-button">
-          <img
-            class="mobile-flag-button-image"
-            src="/assets/flag-button.png"
-            alt="flag icon"
-          />
-        </button>
-        <p>Flag</p>
-      </div>
-      <div class="option">
-        <button
-          class="difficulty"
-          data-width="30"
-          data-height="16"
-          data-mines="99"
-          data-minx="533"
-          data-maxx="798"
-          data-miny="322"
-          data-maxy="430"
-        ></button>
-        <p>Hard</p>
+      <div class="options">
+        <div class="option">
+          <button
+            class="monitor-button difficulty"
+            data-width="9"
+            data-height="9"
+            data-mines="10"
+            data-minx="323"
+            data-maxx="1008"
+            data-miny="252"
+            data-maxy="500"
+          ></button>
+          <p>Easy</p>
+        </div>
+        <div class="option">
+          <button
+            class="monitor-button difficulty"
+            data-width="16"
+            data-height="16"
+            data-mines="40"
+            data-minx="394"
+            data-maxx="938"
+            data-miny="322"
+            data-maxy="431"
+          ></button>
+          <p>Medium</p>
+        </div>
+        <div class="option mobile-flag">
+          <button class="monitor-button mobile-flag-button">
+            <img
+              class="mobile-flag-button-image"
+              src="/assets/flag-button.png"
+              alt="flag icon"
+            />
+          </button>
+          <p>Flag</p>
+        </div>
+        <div class="option">
+          <button
+            class="monitor-button difficulty"
+            data-width="30"
+            data-height="16"
+            data-mines="99"
+            data-minx="533"
+            data-maxx="798"
+            data-miny="322"
+            data-maxy="430"
+          ></button>
+          <p>Hard</p>
+        </div>
       </div>
     </footer>
     <script src="scripts/app.js"></script>
