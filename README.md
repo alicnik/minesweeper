@@ -12,7 +12,7 @@ As this was a vehicle for DOM manipulation, the HTML structure is simple with fe
 
 ## CSS
 
-Design was modelled on the classic Windows 95 desktop, with a photo of an old CRT monitor merged with a screenshot of the original desktop layout. A Minesweeper "icon" was added to the desktop for authenticity and additional interaction. To ensure authenticity, user select and cursor: pointer have been removed throughout as a style choice. Borders are `inset/outset white 2px` throughout, per original game.
+Design was modelled on the classic Windows 95/XP UI, with a photo of an old CRT monitor merged with a screenshot of the original desktop layout. A Minesweeper "icon" was added to the desktop for authenticity and additional interaction. To ensure authenticity, user select and cursor: pointer have been removed throughout as a style choice. Borders are `inset/outset white 2px` throughout, per original game.
 
 Smiley face button designed for this game with influence from Watchmen on game over. Sporadic use of active and hover pseudo-classes to mimic original functionality and UI.
 
@@ -86,10 +86,10 @@ Since mobile phones do not have right click functionality, a button was added to
 
 I was immediately drawn to recreating this game for my first JavaScript project as it evoked a number of childhood memories for me. This was likely the reason for the 90s aesthetic and design choices. I believe that the game functionality is an accurate representation of the original game, but I would welcome any observations or amendments from those who remember it better/differently.
 
-This was a good introduction to simple recursion and the limits/functionality of same. While not part of the game, the challenges of mimicking Windows 95 dragging and selection functionality in a JS environment were particularly engaging and rewarding.
+This was a good introduction to simple recursion and the limits/functionality of same. While not part of the game, the challenges of mimicking Windows dragging and selection functionality in a JS environment were particularly engaging and rewarding.
 
 More than anything, I hope you enjoy the game and that it brings back some good childhood memories for you, too.
 
 ## FUTURE GOALS
 
-To add 'Custom' functionality (where user can decide height/width/number of mines) in a way that integrates with the UI and dynamically works with the drag function. The former could be achieved with more "plastic" buttons on the "monitor" with a button to open a custom window, then plus and minus button for the width/height. A mathematical formula will be investigated for dynamically updating the min and max limits for drag function.
+Since I had more time to implement extra features than originally envisaged, I believe that some of the CSS naming could be smoothed out. Having established a mathematical formula for dragging boundaries, I believe that this could replace the dataset in the HTML code.
