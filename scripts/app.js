@@ -17,7 +17,7 @@ const mobileFlagButton = document.querySelector('.mobile-flag-button')
 const mobileFlagButtonImg = document.querySelector('.mobile-flag-button-image')
 const taskbarTile = document.querySelector('.taskbar-tile')
 
-// Custom Board Size Elements
+//* Custom Board Size Elements
 const customPopup = document.querySelector('.custom-popup')
 const customTriggerButton = document.querySelector('.custom-button')
 const customOKButton = document.querySelector('.custom-ok-button')
@@ -29,7 +29,7 @@ const customInputArray = [customHeightInput, customWidthInput, customMinesInput]
 const customPlusButtons = document.querySelectorAll('.plus-button')
 const customMinusButtons = document.querySelectorAll('.minus-button')
 
-// High Score Elements
+//* High Score Elements
 
 const highScoresButton = document.querySelector('.show-high-scores-button')
 const highScoreRecords = Array.from(document.querySelectorAll('.high-score-text'))
@@ -50,14 +50,14 @@ let mines = 10
 let inGameMineCount = mines
 let tilesArray = []
 let mineLocations = []
-// timerInterval (for game timer) declared here so that interval can be cleared outside setInterval
+//? timerInterval (for game timer) declared here so that interval can be cleared outside setInterval
 let timerInterval, timerCount
 let mobileFlagActive = false
 let userName, userTime, userDifficulty
   
 // EVENT LISTENERS
 
-// Change board size and assign drag and drop limitations
+//? Change board size and assign drag and drop limitations
 difficultyButtons.forEach(button => {
   button.addEventListener('click', (e) => {
     ({ height, width, mines } = e.target.dataset)
@@ -75,7 +75,7 @@ monitorButtons.forEach(button => {
   })
 })
 
-// Change smiley face expression on tile click
+//? Change smiley face expression on tile click
 grid.addEventListener('mousedown', (e) => {
   if (e.button !== 2 && !tilesArray[e.target.dataset.index].isFlagged) {
     smileyButton.classList.add('shocked-smiley')
@@ -86,10 +86,10 @@ document.addEventListener('mouseup', () => {
   smileyButton.classList.remove('shocked-smiley')
 })
 
-// Reset board when Smiley Button clicked
+//? Reset board when Smiley Button clicked
 smileyButton.addEventListener('click', reset)
 
-// Switch to flag placement in mobile
+//* Switch to flag placement in mobile
 
 mobileFlagButton.addEventListener('click', () => {
   if (!mobileFlagActive){
@@ -109,7 +109,7 @@ mobileFlagButton.addEventListener('click', () => {
   }
 })
 
-// Custom
+//* Custom Board Size
 
 customTriggerButton.addEventListener('click', () => {
   customPopup.classList.remove('hidden')
@@ -149,6 +149,73 @@ customMinusButtons.forEach(button => {
   })
 })
 
+//* High Scores
+
+resetHighScoresButton.addEventListener('click', resetHighScores)
+okHighScoresButton.addEventListener('click', () => {
+  setTimeout(()=> {
+    highScoresWindow.classList.add('hidden')
+  }, 110)
+})
+
+newHighScoreCancelButton.addEventListener('click', () => {
+  setTimeout(()=> {
+    newHighScoreWindow.classList.add('hidden')
+  }, 110)
+})
+
+newHighScoreSubmitButton.addEventListener('click', () => {
+  if (!newHighScoreName.value) return
+  userName = newHighScoreName.value
+  updateHighScoresLocalStorage(userDifficulty, userTime, userName)
+  updateHighScoresWindow()
+  newHighScoreWindow.classList.add('hidden')
+})
+
+highScoresButton.addEventListener('click', () => {
+  highScoresWindow.classList.toggle('hidden')
+})
+
+//* Close/minimise functionality and desktop icon
+
+//? Set timeout used as window removal was too quick for human eye. Resets game otherwise game runs in background.
+closeButton.addEventListener('click', () => {
+  setTimeout(() => {
+    container.classList.add('hidden')
+    taskbarTile.classList.add('hidden')
+    reset()
+  }, 110)
+})
+
+minimiseButton.addEventListener('click', () => {
+  setTimeout(() => {
+    container.classList.add('hidden')
+    reset()
+  }, 110)
+})
+
+taskbarTile.addEventListener('click', () => {
+  container.classList.toggle('hidden')
+})
+
+//? Functionality to add/remove "selection highlighting" of desktop icon
+desktopIcon.addEventListener('mousedown', () => {
+  desktopIcon.classList.toggle('desktop-icon-container-active')
+})
+
+document.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('desktop-icon')) {
+    desktopIcon.classList.remove('desktop-icon-container-active')
+  }
+})
+
+desktopIcon.addEventListener('dblclick', () => {
+  container.classList.remove('hidden')
+  setTimeout(() => {
+    taskbarTile.classList.remove('hidden')
+  }, 34)
+})
+
 
 // FIRST DRAW
 
@@ -157,8 +224,8 @@ updateHighScoresWindow()
   
 // GAME INITIATION
 
-//Restarts the record of tiles in tilesArray, clears grid of all existing divs and makes it clickable again (game functionality is such that when game is lost/won the grid becomes unclickable). Grid template is then dynamically modified in DOM depending on size of board.
-// Grid is automatically populated with div.tile.initial, event listeners for left and right click added to each element, the element is appended to the DOM in the game grid, and an object with essential properties is pushed into the tilesArray to allow for functionality in later game. Count is added to represent index on the element and in the tile object so that it can be easily accessed whether approaching from the DOM or through the tilesArray.
+//? Restarts the record of tiles in tilesArray, clears grid of all existing divs and makes it clickable again (game functionality is such that when game is lost/won the grid becomes unclickable). Grid template is then dynamically modified in DOM depending on size of board.
+//? Grid is automatically populated with div.tile.initial, event listeners for left and right click added to each element, the element is appended to the DOM in the game grid, and an object with essential properties is pushed into the tilesArray to allow for functionality in later game. Count is added to represent index on the element and in the tile object so that it can be easily accessed whether approaching from the DOM or through the tilesArray.
 function drawMinefield() {
   tilesArray = []
   grid.innerHTML = ''
@@ -187,7 +254,7 @@ function drawMinefield() {
 
 // GAME INITIATION HELPER FUNCTIONS
 
-//Main functionality event. If all tiles are unclicked, start timer running and populate minefield. First click cannot be on a mine or on a tile next to a mine, accomplished through while loop. Principal revealClicked function is then run. Same revealClicked function is run after the first click on any tile that has not been flagged. After each click, progress is assessed.
+//? Main functionality event. If all tiles are unclicked, start timer running and populate minefield. First click cannot be on a mine or on a tile next to a mine, accomplished through while loop. Principal revealClicked function is then run. Same revealClicked function is run after the first click on any tile that has not been flagged. After each click, progress is assessed.
 function clickTile(event) {
   if (tilesArray.every(tile => !tile.clicked)) {
     startTimer()
@@ -209,7 +276,7 @@ function flagTile(event) {
   addOrRemoveFlag(event.target)
 }
 
-// Calculates which tiles are above, below, to the side and at the diagonals of a tile.
+//? Calculates which tiles are above, below, to the side and at the diagonals of a tile.
 function adjacentTiles(width, height, index) {
   let workingArray 
   width = Number(width)
@@ -245,7 +312,7 @@ function adjacentTiles(width, height, index) {
   return workingArray.filter(tileIndex => 0 <= tileIndex && tileIndex < width * height)
 }
 
-//Simultaneously add and remove a class from a given element
+//? Simultaneously add and remove a class from a given element
 function addAndRemoveClass(element, classToAdd, classToRemove) {
   element.classList.add(classToAdd)
   element.classList.remove(classToRemove)
@@ -266,7 +333,7 @@ function startTimer() {
   }, 1000)
 }
 
-// If tile is not flagged, reveal whether there is a mine underneath, whether it is blank (in which case recursive function below is called), or whether it is next to a mine, in which case the right numerical depiction is uncovered. 
+//? If tile is not flagged, reveal whether there is a mine underneath, whether it is blank (in which case recursive function below is called), or whether it is next to a mine, in which case the right numerical depiction is uncovered. 
 function revealClicked(event) {
   const clickedTile = event.target
   const clickedTileIndex = Number(clickedTile.dataset.index)
@@ -283,7 +350,7 @@ function revealClicked(event) {
   }
 }
 
-// Recursive function to examine tiles surrounding the first tile clicked, and if one of the surrounding tiles has no mines next to it to perform the same analysis. Allows for functionality where a series of blank tiles can be exposed with one click.
+//? Recursive function to examine tiles surrounding the first tile clicked, and if one of the surrounding tiles has no mines next to it to perform the same analysis. Allows for functionality where a series of blank tiles can be exposed with one click.
 function revealExtended(tileIndex) {
   tilesArray[tileIndex].adjacentTiles.forEach(adjacentTileIndex => {
     if (adjacentMineCount(adjacentTileIndex) === 0 && !tilesArray[adjacentTileIndex].recursed) {
@@ -302,12 +369,12 @@ function revealExtended(tileIndex) {
 }
 
 function addOrRemoveFlag(clickedTile) {
-  // Prevent flag placement on first click
+  //? Prevent flag placement on first click
   if (tilesArray.every(tile => !tile.clicked)) {
     alert('You can\'t place a flag yet, please uncover a tile first')
     return
   }
-  // Place flag only on tiles that are not flagged and have not been clicked; remove flag from tiles that have not been clicked (to avoid changing state of clicked tile)
+  //? Place flag only on tiles that are not flagged and have not been clicked; remove flag from tiles that have not been clicked (to avoid changing state of clicked tile)
   if (!tilesArray[clickedTile.dataset.index].isFlagged && !tilesArray[clickedTile.dataset.index].clicked) {
     addAndRemoveClass(clickedTile, 'flag', 'tile-initial')
     tilesArray[clickedTile.dataset.index].isFlagged = true
@@ -320,7 +387,7 @@ function addOrRemoveFlag(clickedTile) {
   updateMineCounterDisplay()
 }
 
-// Check to see if all tiles without mines have been clicked
+//? Check to see if all tiles without mines have been clicked
 function checkProgress() {
   if (tilesArray.filter(tile => !mineLocations.includes(tile.index)).every(tile => tile.clicked)) {
     winGame()
@@ -337,7 +404,7 @@ function winGame() {
   userDifficulty = calculateDifficulty()
   smileyButton.classList.add('sunglasses-smiley')
   addAndRemoveClass(grid, 'unclickable', 'clickable')
-  // Automatically place flags on mine tiles where user has clicked all non-mine tiles
+  //? Automatically place flags on mine tiles where user has clicked all non-mine tiles
   tilesArray.filter(tile => mineLocations.includes(tile.index)).forEach(tile => {
     tile.element.classList.add('flag')
   })
@@ -361,7 +428,7 @@ function calculateDifficulty() {
 function gameOver(clickedTileIndex) {
   clearInterval(timerInterval)
   smileyButton.classList.add('dead-smiley')
-  // Reveal mine locations
+  //? Reveal mine locations
   mineLocations.forEach(mineLocationIndex => {
     if (mineLocationIndex !== clickedTileIndex) {
       addAndRemoveClass(tilesArray[mineLocationIndex].element,'undetected-mine', 'initial-tile')
@@ -369,7 +436,7 @@ function gameOver(clickedTileIndex) {
       addAndRemoveClass(tilesArray[mineLocationIndex].element,'exploded-mine', 'initial-tile')
     }
   })
-  // Reveal tiles incorrectly flagged as having a mine
+  //? Reveal tiles incorrectly flagged as having a mine
   tilesArray.filter(tile => tile.isFlagged).forEach(tile => {
     if (!mineLocations.includes(tile.index)) {
       addAndRemoveClass(tile.element,'wrong-mine', 'flag')
@@ -396,7 +463,7 @@ function populateMines() {
   }
 }
   
-//Recursive mine placement function to ensure that no tile has more than one mine
+//? Recursive mine placement function to ensure that no tile has more than one mine
 function placeMine() {
   const mineLocation = Math.floor(Math.random() * width * height)
   mineLocations.includes(mineLocation) ? placeMine() : mineLocations.push(mineLocation)
@@ -424,7 +491,7 @@ function recentreContainer() {
 
 // DRAG AND DROP FUNCTIONALITY
 
-// Because positioning limits on the background were calculated in relation to the container of the element being moved, many of the variables are calculated by reference to the parentElement. This was also necessary because the title bar of the minesweeper window is a child of the main container and it is the whole container that needs to move, but only when the title bar is dragged.
+//? Because positioning limits on the background were calculated in relation to the container of the element being moved, many of the variables are calculated by reference to the parentElement. This was also necessary because the title bar of the minesweeper window is a child of the main container and it is the whole container that needs to move, but only when the title bar is dragged.
 
 draggableElements.forEach(element => dragElement(element))
 
@@ -432,7 +499,7 @@ function dragElement(element) {
   let startingPosX, startingPosY, posChangeX, posChangeY
 
   element.addEventListener('mousedown', clickToDrag)
-  // Because of z-index in CSS, dragging the desktop icon under the minesweeper window caused the event to change to the minesweeper window, which would then start moving instead of the desktop icon. To resolve this, pointer events were disabled for the other element.
+  //? Because of z-index in CSS, dragging the desktop icon under the minesweeper window caused the event to change to the minesweeper window, which would then start moving instead of the desktop icon. To resolve this, pointer events were disabled for the other element.
   const otherDraggableElements = draggableElements.filter(otherElement => otherElement !== element)
 
   function clickToDrag(e) {
@@ -442,8 +509,8 @@ function dragElement(element) {
       element.parentElement.style.pointerEvents = 'none'
     })
     addAndRemoveClass(grid, 'unclickable', 'clickable')
-    // Clicking close button on title bar should not drag window
-    // Record where click started on x and y axis
+    //? Clicking close button on title bar should not drag window
+    //? Record where click started on x and y axis
     startingPosX = e.clientX
     startingPosY = e.clientY
     element.onmousemove = moveElement
@@ -453,23 +520,23 @@ function dragElement(element) {
   function moveElement(e) {
     e.preventDefault()
     e.target.classList.add('travelling')
-    // Destructuring assigment to lowercase as dataset does not allow uppercase letters/camelCase
+    //? Destructuring assigment to lowercase as dataset does not allow uppercase letters/camelCase
     const { minx, maxx, miny, maxy } = element.parentElement.dataset
-    // Measure change in x and y values to establish where window is going to
+    //? Measure change in x and y values to establish where window is going to
     posChangeX = startingPosX - e.clientX
     posChangeY = startingPosY - e.clientY
-    // Update starting position for the posChange calculations above for continued dynamic movement
+    //? Update starting position for the posChange calculations above for continued dynamic movement
     startingPosX = e.clientX
     startingPosY = e.clientY
-    // Set min/max limitations on how far window/icon can be dragged so that it doesn't move off the screen in the background picture. Change is calculated against offset to establish distance of container from edges.
+    //? Set min/max limitations on how far window/icon can be dragged so that it doesn't move off the screen in the background picture. Change is calculated against offset to establish distance of container from edges.
     const minMaxX = Math.min(Math.max(element.parentElement.offsetLeft - posChangeX, minx), maxx)
     const minMaxY = Math.min(Math.max(element.parentElement.offsetTop - posChangeY, miny), maxy)
-    // Set new positions
+    //? Set new positions
     element.parentElement.style.left = `${minMaxX}px`
     element.parentElement.style.top = `${minMaxY}px`
   }
   
-  // Reinstate pointer events, remove relevant classes, and set event listeners to null
+  //? Reinstate pointer events, remove relevant classes, and set event listeners to null
   function stopMoving(e) {
     otherDraggableElements.forEach(element => element.parentElement.style.pointerEvents = 'initial')
     if (e.target.classList.contains('travelling')) {
@@ -482,77 +549,9 @@ function dragElement(element) {
   }
 }
 
-// CLOSE/MINIMISE FUNCTIONALITY AND DESKTOP ICON
-
-// Set timeout used as window removal was too quick for human eye. Resets game otherwise game runs in background.
-closeButton.addEventListener('click', () => {
-  setTimeout(() => {
-    container.classList.add('hidden')
-    taskbarTile.classList.add('hidden')
-    reset()
-  }, 110)
-})
-
-minimiseButton.addEventListener('click', () => {
-  setTimeout(() => {
-    container.classList.add('hidden')
-    reset()
-  }, 110)
-})
-
-taskbarTile.addEventListener('click', () => {
-  container.classList.toggle('hidden')
-})
-
-// Functionality to add/remove "selection highlighting" of desktop icon
-desktopIcon.addEventListener('mousedown', () => {
-  desktopIcon.classList.toggle('desktop-icon-container-active')
-})
-
-document.addEventListener('click', (e) => {
-  if (!e.target.classList.contains('desktop-icon')) {
-    desktopIcon.classList.remove('desktop-icon-container-active')
-  }
-})
-
-desktopIcon.addEventListener('dblclick', () => {
-  container.classList.remove('hidden')
-  setTimeout(() => {
-    taskbarTile.classList.remove('hidden')
-  }, 34)
-})
-
-// ON LOAD EVENT LISTENERS
-
-// Start desktop background clock running
-
-window.addEventListener('DOMContentLoaded', () => {
-  const clock = document.querySelector('.clock')
-  clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-  setInterval(() => {
-    clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-  }, 1000)
-})
-
-// EASTER EGGS
-const outlookExpressIcon = document.querySelector('.outlook')
-const ieIcon = document.querySelector('.ie')
-
-outlookExpressIcon.addEventListener('dblclick', () => {
-  window.location.href = 'mailto:bill.gates@microsoft.com?subject=I%20love%20minesweeper!&body=Can%20you%20give%20Ali%20a%20job?'
-})
-
-ieIcon.addEventListener('dblclick', () => {
-  alert('No.')
-})
-
-
-
-
 // HIGH SCORES
 
-
-
+//? Takes high scores from localStorage and updates DOM element. If no localStorage, just populates "Not set"
 function updateHighScoresWindow() {
   const highScoresObject = JSON.parse(localStorage.getItem('highScores'))
   if (highScoresObject) {
@@ -567,6 +566,7 @@ function updateHighScoresWindow() {
   }
 }
 
+//? Compares player's game to existing high scores. If faster than existing high score for that difficulty, player is taken to a congratulatory new high score window. If no existing high scores, player goes to new high score window.
 function checkHighScores(userDifficulty, userTime) {
   const highScoresObject = JSON.parse(localStorage.getItem('highScores'))
   if (highScoresObject) {
@@ -578,11 +578,13 @@ function checkHighScores(userDifficulty, userTime) {
   }
 }
 
+//? Update congratulatory new high score window with custom message and reveal window allowing player to enter name and save high score
 function updateAndDisplayCongratulationsWindow(userDifficulty, userTime) {
   newHighScoreText.innerHTML = `You completed ${userDifficulty} in ${userTime} seconds!`
   newHighScoreWindow.classList.remove('hidden')
 }
 
+//? Update the localStorage with new high score (localStorage.set)
 function updateHighScoresLocalStorage(userDifficulty, userTime, userName) {
   const highScoresObject = JSON.parse(localStorage.getItem('highScores')) || { 
     beginner: { name: 'Not set', time: 'Not set' }, 
@@ -600,27 +602,27 @@ function resetHighScores() {
   localStorage.clear()
 }
 
-resetHighScoresButton.addEventListener('click', resetHighScores)
-okHighScoresButton.addEventListener('click', () => {
-  setTimeout(()=> {
-    highScoresWindow.classList.add('hidden')
-  }, 110)
+// ON LOAD EVENT LISTENERS
+
+//? Start desktop background clock running
+window.addEventListener('DOMContentLoaded', () => {
+  const clock = document.querySelector('.clock')
+  clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  setInterval(() => {
+    clock.innerHTML = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  }, 1000)
 })
 
-newHighScoreCancelButton.addEventListener('click', () => {
-  setTimeout(()=> {
-    newHighScoreWindow.classList.add('hidden')
-  }, 110)
+
+// EASTER EGGS
+
+const outlookExpressIcon = document.querySelector('.outlook')
+const ieIcon = document.querySelector('.ie')
+
+outlookExpressIcon.addEventListener('dblclick', () => {
+  window.location.href = 'mailto:bill.gates@microsoft.com?subject=I%20love%20minesweeper!&body=Can%20you%20give%20Ali%20a%20job?'
 })
 
-newHighScoreSubmitButton.addEventListener('click', () => {
-  if (!newHighScoreName.value) return
-  userName = newHighScoreName.value
-  updateHighScoresLocalStorage(userDifficulty, userTime, userName)
-  updateHighScoresWindow()
-  newHighScoreWindow.classList.add('hidden')
-})
-
-highScoresButton.addEventListener('click', () => {
-  highScoresWindow.classList.toggle('hidden')
+ieIcon.addEventListener('dblclick', () => {
+  alert('No.')
 })
