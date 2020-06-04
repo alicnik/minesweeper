@@ -29,6 +29,19 @@ const customInputArray = [customHeightInput, customWidthInput, customMinesInput]
 const customPlusButtons = document.querySelectorAll('.plus-button')
 const customMinusButtons = document.querySelectorAll('.minus-button')
 
+// High Score Elements
+
+const highScoresButton = document.querySelector('.show-high-scores-button')
+const highScoreRecords = Array.from(document.querySelectorAll('.high-score-text'))
+const resetHighScoresButton = document.querySelector('.reset-high-scores')
+const okHighScoresButton = document.querySelector('.ok-high-scores')
+const highScoresWindow = document.querySelector('.high-scores-window')
+const newHighScoreWindow = document.querySelector('.congratulations-container')
+const newHighScoreText = document.querySelector('.new-high-score-text')
+const newHighScoreCancelButton = document.querySelector('.high-score-name-cancel')
+const newHighScoreSubmitButton = document.querySelector('.high-score-name-submit')
+const newHighScoreName = document.querySelector('#new-high-score-name')
+
 // PROGRAM VARIABLES
 
 let width = 9
@@ -38,8 +51,9 @@ let inGameMineCount = mines
 let tilesArray = []
 let mineLocations = []
 // timerInterval (for game timer) declared here so that interval can be cleared outside setInterval
-let timerInterval
+let timerInterval, timerCount
 let mobileFlagActive = false
+let userName, userTime, userDifficulty
   
 // EVENT LISTENERS
 
@@ -133,6 +147,7 @@ customMinusButtons.forEach(button => {
 // FIRST DRAW
 
 drawMinefield()
+updateHighScoresWindow()
   
 // GAME INITIATION
 
@@ -234,7 +249,7 @@ function addAndRemoveClass(element, classToAdd, classToRemove) {
 // GENERAL GAME FUNCTIONS
 
 function startTimer() {
-  let timerCount = 1
+  timerCount = 1
   timerInterval = setInterval(() => {
     timerCount < 10 ? timer.innerHTML = `00${timerCount}` :
       timerCount < 100 ? timer.innerHTML = `0${timerCount}` : 
@@ -312,6 +327,8 @@ function updateMineCounterDisplay() {
 
 function winGame() {
   clearInterval(timerInterval)
+  userTime = timerCount - 1
+  userDifficulty = calculateDifficulty()
   smileyButton.classList.add('sunglasses-smiley')
   addAndRemoveClass(grid, 'unclickable', 'clickable')
   // Automatically place flags on mine tiles where user has clicked all non-mine tiles
@@ -319,6 +336,20 @@ function winGame() {
     tile.element.classList.add('flag')
   })
   minesRemaining.innerHTML = '0'
+  checkHighScores(userDifficulty, userTime)
+}
+
+function calculateDifficulty() {
+  width = Number(width)
+  height = Number(height)
+  mines = Number(mines)
+  if (width === 9 && height === 9 && mines === 10){
+    return 'beginner'
+  } else if (width === 16 && height === 16 && mines === 40){
+    return 'medium'
+  } else if (width === 30 && height === 16 && mines === 99){
+    return 'hard'
+  }
 }
 
 function gameOver(clickedTileIndex) {
@@ -507,4 +538,82 @@ outlookExpressIcon.addEventListener('dblclick', () => {
 
 ieIcon.addEventListener('dblclick', () => {
   alert('No.')
+})
+
+
+
+
+// HIGH SCORES
+
+
+
+function updateHighScoresWindow() {
+  const highScoresObject = JSON.parse(localStorage.getItem('highScores'))
+  if (highScoresObject) {
+    highScoreRecords.forEach((record, index) => {
+      record.innerHTML = highScoresObject[record.dataset.level][record.dataset.id]
+      if (index % 2 === 0 && record.innerHTML !== 'Not set') {
+        record.innerHTML += ' seconds'
+      }
+    })
+  } else {
+    highScoreRecords.forEach(record => record.innerHTML = 'Not set')
+  }
+}
+
+function checkHighScores(userDifficulty, userTime) {
+  const highScoresObject = JSON.parse(localStorage.getItem('highScores'))
+  if (highScoresObject) {
+    if (userTime < highScoresObject[userDifficulty].time || highScoresObject[userDifficulty].time === 'Not set') {
+      updateAndDisplayCongratulationsWindow(userDifficulty, userTime)
+    }
+  } else {
+    updateAndDisplayCongratulationsWindow(userDifficulty, userTime)
+  }
+}
+
+function updateAndDisplayCongratulationsWindow(userDifficulty, userTime) {
+  newHighScoreText.innerHTML = `You completed ${userDifficulty} in ${userTime} seconds!`
+  newHighScoreWindow.classList.remove('hidden')
+}
+
+function updateHighScoresLocalStorage(userDifficulty, userTime, userName) {
+  const highScoresObject = JSON.parse(localStorage.getItem('highScores')) || { 
+    beginner: { name: 'Not set', time: 'Not set' }, 
+    medium: { name: 'Not set', time: 'Not set' }, 
+    hard: { name: 'Not set', time: 'Not set' } 
+  }
+  highScoresObject[userDifficulty].name = userName
+  highScoresObject[userDifficulty].time = userTime
+  const updatedHighScoresObject = JSON.stringify(highScoresObject)
+  localStorage.setItem('highScores', updatedHighScoresObject)
+}
+
+function resetHighScores() {
+  highScoreRecords.forEach(record => record.innerHTML = 'Not set')
+  localStorage.clear()
+}
+
+resetHighScoresButton.addEventListener('click', resetHighScores)
+okHighScoresButton.addEventListener('click', () => {
+  setTimeout(()=> {
+    highScoresWindow.classList.add('hidden')
+  }, 110)
+})
+
+newHighScoreCancelButton.addEventListener('click', () => {
+  setTimeout(()=> {
+    newHighScoreWindow.classList.add('hidden')
+  }, 110)
+})
+
+newHighScoreSubmitButton.addEventListener('click', () => {
+  userName = newHighScoreName.value
+  updateHighScoresLocalStorage(userDifficulty, userTime, userName)
+  updateHighScoresWindow()
+  newHighScoreWindow.classList.add('hidden')
+})
+
+highScoresButton.addEventListener('click', () => {
+  highScoresWindow.classList.toggle('hidden')
 })

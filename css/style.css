@@ -230,7 +230,8 @@ footer {
 }
 
 .option,
-.custom-control {
+.custom-control,
+.show-high-scores {
   margin: 0 10px;
   height: 60px;
   width: 50px;
@@ -242,7 +243,8 @@ footer {
 
 .difficulty,
 .mobile-flag-button,
-.custom-button {
+.custom-button,
+.show-high-scores-button {
   height: 30px;
   width: 45px;
   border-radius: 50%;
@@ -255,7 +257,8 @@ footer {
 
 .difficulty:active:hover,
 .mobile-flag-button:active:hover,
-.custom-button:active:hover {
+.custom-button:active:hover,
+.show-high-scores-button:active:hover {
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset,
     5px 0 5px -3px rgba(0, 0, 0, 0.2) inset,
     -5px 0 5px -3px rgba(0, 0, 0, 0.2) inset;
@@ -263,7 +266,8 @@ footer {
 
 .difficulty::after,
 .mobile-flag-button::after,
-.custom-button::after {
+.custom-button::after,
+.show-high-scores-button::after {
   content: "";
   width: 47px;
   height: 32px;
@@ -272,6 +276,12 @@ footer {
   position: absolute;
   bottom: -2px;
   right: -2px;
+}
+
+.show-high-scores {
+  height: 69px;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .mobile-flag {
@@ -324,7 +334,8 @@ footer p {
   z-index: 20;
 }
 
-.custom-popup-title-bar {
+.custom-popup-title-bar,
+.high-scores-title-bar {
   display: flex;
   align-items: center;
   width: 100%;
@@ -337,12 +348,14 @@ footer p {
   );
 }
 
-.custom-popup-title-bar img {
+.custom-popup-title-bar img,
+.high-scores-title-bar img {
   height: 15px;
   margin-right: 5px;
 }
 
-.custom-popup-title-bar h3 {
+.custom-popup-title-bar h3,
+.high-scores-title-bar h3 {
   color: white;
   font-weight: 400;
   text-shadow: 0 0 1px white;
@@ -414,6 +427,106 @@ footer p {
   font-weight: 500;
   color: rgb(38, 38, 38);
   text-shadow: 0px 0px 1px rgb(29, 29, 29);
+}
+
+.high-scores-window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Tahoma", sans-serif;
+  width: 290px;
+  height: 180px;
+  border: 2px white outset;
+  background: var(--tile-background);
+  z-index: 30;
+}
+
+.high-scores {
+  height: calc(100% - 25px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 25px 25px 20px;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.high-scores h4,
+.high-scores p {
+  font-weight: 400;
+  flex: 1;
+}
+
+.high-score {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex: 1.4;
+}
+
+.high-score-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  flex: 2.1;
+}
+
+.high-score-buttons button {
+  width: 75px;
+  height: 25px;
+  border: 2px rgb(216, 216, 216) outset;
+}
+
+.high-score-buttons button:active {
+  border: 2px rgb(216, 216, 216) inset;
+}
+
+.congratulations-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  padding: 10px 20px;
+  background: var(--tile-background);
+  text-align: center;
+  font-family: "Tahoma", sans-serif;
+  border: 2px rgb(240, 240, 240) outset;
+  z-index: 40;
+  font-family: "VT323", monospace;
+}
+
+.congratulations-container * {
+  margin: 10px;
+}
+
+.congratulations-container h3 {
+  font-weight: 400;
+  font-size: 1.8rem;
+  animation: textFlash 10s infinite forwards;
+}
+
+.congratulations-container label {
+  font-size: 1rem;
+}
+
+.congratulations-container input {
+  font-size: 1rem;
+  padding: 3px;
+}
+
+.congratulations-container button {
+  margin-top: none;
+  font-size: 0.9rem;
+  padding: 3px 10px;
+  border: 2px rgb(235, 235, 235) outset;
+}
+
+.congratulations-container button:active {
+  border: 2px rgb(235, 235, 235) inset;
 }
 
 .outlook,
@@ -631,15 +744,12 @@ Mobile Layout ------------------------------------------------------------------
     transform: none;
   }
 
-  .title-bar {
-    display: none;
-  }
-
-  .desktop-icon-container {
-    display: none;
-  }
-
-  .clock {
+  .title-bar,
+  .desktop-icon-container,
+  .clock,
+  .outlook,
+  .custom-controls,
+  .ie {
     display: none;
   }
 
@@ -662,11 +772,30 @@ Mobile Layout ------------------------------------------------------------------
     opacity: 0.3;
   }
 
-  .custom-controls {
-    display: none;
-  }
-
   footer .option:last-child {
     display: none;
+  }
+}
+
+/* Animations */
+
+@keyframes textFlash {
+  0% {
+    color: rgb(15, 201, 15);
+  }
+  20% {
+    color: rgb(208, 52, 17);
+  }
+  40% {
+    color: rgb(24, 120, 223);
+  }
+  60% {
+    color: rgb(242, 242, 28);
+  }
+  80% {
+    color: rgb(245, 39, 180);
+  }
+  100% {
+    color: rgb(255, 153, 0);
   }
 }

@@ -7,6 +7,10 @@
     <link rel="icon" href="assets/minesweeper-icon.png" />
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
     <meta name="robots" content="index, follow" />
     <meta
       name="description"
@@ -110,6 +114,61 @@
         <img src="./assets/minesweeper-icon.png" alt="minesweeper-icon" />
         <h2>Minesweeper</h2>
       </div>
+      <div
+        class="high-scores-window hidden"
+        data-minx="368"
+        data-maxx="963"
+        data-miny="201"
+        data-maxy="552"
+      >
+        <div class="high-scores-title-bar draggable">
+          <img src="/assets/window-icon.png" alt="" />
+          <h3>High Scores</h3>
+        </div>
+        <div class="high-scores">
+          <div class="high-score">
+            <h4>Beginner</h4>
+            <p class="high-score-text" data-level="beginner" data-id="time">
+              Not set
+            </p>
+            <p class="high-score-text" data-level="beginner" data-id="name">
+              Not set
+            </p>
+          </div>
+          <div class="high-score">
+            <h4>Medium</h4>
+            <p class="high-score-text" data-level="medium" data-id="time">
+              Not set
+            </p>
+            <p class="high-score-text" data-level="medium" data-id="name">
+              Not set
+            </p>
+          </div>
+          <div class="high-score">
+            <h4>Hard</h4>
+            <p class="high-score-text" data-level="hard" data-id="time">
+              Not set
+            </p>
+            <p class="high-score-text" data-level="hard" data-id="name">
+              Not set
+            </p>
+          </div>
+          <div class="high-score-buttons">
+            <button class="reset-high-scores">Reset</button>
+            <button class="ok-high-scores">OK</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="congratulations-container hidden">
+        <h3>CONGRATULATIONS!<br />New high score!</h3>
+        <p class="new-high-score-text">You completed beginner in 8 seconds!</p>
+        <label for="name">Enter your name:</label>
+        <input type="text" name="name" id="new-high-score-name" />
+        <button class="high-score-name-cancel">Cancel</button>
+        <button class="high-score-name-submit">Submit</button>
+      </div>
+
       <div class="clock">12:00 PM</div>
       <div class="outlook"></div>
       <div class="ie"></div>
@@ -180,6 +239,10 @@
         </div>
       </div>
       <div class="options">
+        <div class="show-high-scores">
+          <button class="show-high-scores-button monitor-button"></button>
+          <p>High Scores</p>
+        </div>
         <div class="option">
           <button
             class="monitor-button difficulty"
