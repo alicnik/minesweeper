@@ -136,11 +136,17 @@ customCancelButton.addEventListener('click', (e) => {
 })
 
 customPlusButtons.forEach(button => {
-  button.addEventListener('click', () => customInputArray[button.dataset.customElementIndex].stepUp())
+  button.addEventListener('click', () =>{
+    if (customPopup.classList.contains('hidden')) return
+    customInputArray[button.dataset.customElementIndex].stepUp()
+  })
 })
 
 customMinusButtons.forEach(button => {
-  button.addEventListener('click', () => customInputArray[button.dataset.customElementIndex].stepDown())
+  button.addEventListener('click', () => {
+    if (customPopup.classList.contains('hidden')) return
+    customInputArray[button.dataset.customElementIndex].stepDown()
+  })
 })
 
 
@@ -336,7 +342,7 @@ function winGame() {
     tile.element.classList.add('flag')
   })
   minesRemaining.innerHTML = '0'
-  checkHighScores(userDifficulty, userTime)
+  if (userDifficulty) checkHighScores(userDifficulty, userTime)
 }
 
 function calculateDifficulty() {
@@ -607,7 +613,8 @@ newHighScoreCancelButton.addEventListener('click', () => {
   }, 110)
 })
 
-newHighScoreSubmitButton.addEventListener('click', () => {
+newHighScoreSubmitButton.addEventListener('click', (e) => {
+  if (!newHighScoreName.value) return
   userName = newHighScoreName.value
   updateHighScoresLocalStorage(userDifficulty, userTime, userName)
   updateHighScoresWindow()

@@ -162,11 +162,21 @@
 
       <div class="congratulations-container hidden">
         <h3>CONGRATULATIONS!<br />New high score!</h3>
-        <p class="new-high-score-text">You completed beginner in 8 seconds!</p>
-        <label for="name">Enter your name:</label>
-        <input type="text" name="name" id="new-high-score-name" />
-        <button class="high-score-name-cancel">Cancel</button>
-        <button class="high-score-name-submit">Submit</button>
+        <p class="new-high-score-text">
+          You completed beginner in 8 seconds!
+        </p>
+        <form action="">
+          <label for="new-high-score-name">Enter your name:</label>
+          <input
+            type="text"
+            minlength="1"
+            maxlength="15"
+            id="new-high-score-name"
+            required
+          />
+          <button class="high-score-name-cancel">Cancel</button>
+          <button type="submit" class="high-score-name-submit">Submit</button>
+        </form>
       </div>
 
       <div class="clock">12:00 PM</div>
