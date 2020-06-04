@@ -613,7 +613,7 @@ newHighScoreCancelButton.addEventListener('click', () => {
   }, 110)
 })
 
-newHighScoreSubmitButton.addEventListener('click', (e) => {
+newHighScoreSubmitButton.addEventListener('click', () => {
   if (!newHighScoreName.value) return
   userName = newHighScoreName.value
   updateHighScoresLocalStorage(userDifficulty, userTime, userName)
