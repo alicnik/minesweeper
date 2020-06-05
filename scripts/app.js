@@ -113,7 +113,7 @@ mobileFlagButton.addEventListener('click', () => {
 //* Custom Board Size
 
 customTriggerButton.addEventListener('click', () => {
-  [container, taskbarTile, customPopup].forEach(element => element.classList.toggle('hidden'))
+  removeHiddenClassFrom(container, taskbarTile, customPopup)
 })
 
 
