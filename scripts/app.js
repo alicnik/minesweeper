@@ -64,6 +64,7 @@ difficultyButtons.forEach(button => {
     calculateGameContainerDragBoundaries()
     recentreContainer()
     reset()
+    removeHiddenClassFrom(container,taskbarTile)
   })
 })
 
@@ -112,21 +113,39 @@ mobileFlagButton.addEventListener('click', () => {
 //* Custom Board Size
 
 customTriggerButton.addEventListener('click', () => {
-  customPopup.classList.remove('hidden')
+  [container, taskbarTile, customPopup].forEach(element => element.classList.toggle('hidden'))
 })
+
+
+customInputArray.forEach(inputField => {
+  inputField.addEventListener('change', () => {
+    if (inputField.validity.rangeOverflow || inputField.validity.rangeUnderflow) {
+      alert(`Please enter a number from ${inputField.placeholder}`)
+      inputField.value = ''
+    }
+  })
+})
+
 
 customOKButton.addEventListener('click', (e) => {
   e.preventDefault()
-  height = customHeightInput.value || height
-  width = customWidthInput.value || width
-  mines = customMinesInput.value || mines
-  calculateGameContainerDragBoundaries()
-  customInputArray.forEach(input => input.value = '')
-  setTimeout(() => {
-    customPopup.classList.add('hidden')
-  }, 100)
-  recentreContainer()
-  reset()
+  if (customInputArray.every(input => input.checkValidity())) {
+    height = customHeightInput.value || height
+    width = customWidthInput.value || width
+    mines = customMinesInput.value || mines
+    if (mines < height * width) {
+      calculateGameContainerDragBoundaries()
+      customInputArray.forEach(input => input.value = '')
+      setTimeout(() => {
+        customPopup.classList.add('hidden')
+      }, 100)
+      recentreContainer()
+      reset()
+      return
+    } else {
+      alert('Too many mines!')
+    }
+  } 
 })
 
 customCancelButton.addEventListener('click', (e) => {
@@ -137,14 +156,14 @@ customCancelButton.addEventListener('click', (e) => {
 
 customPlusButtons.forEach(button => {
   button.addEventListener('click', () =>{
-    if (customPopup.classList.contains('hidden')) return
+    removeHiddenClassFrom(container, taskbarTile, customPopup)
     customInputArray[button.dataset.customElementIndex].stepUp()
   })
 })
 
 customMinusButtons.forEach(button => {
   button.addEventListener('click', () => {
-    if (customPopup.classList.contains('hidden')) return
+    removeHiddenClassFrom(container, taskbarTile, customPopup)
     customInputArray[button.dataset.customElementIndex].stepDown()
   })
 })
@@ -181,8 +200,7 @@ highScoresButton.addEventListener('click', () => {
 //? Set timeout used as window removal was too quick for human eye. Resets game otherwise game runs in background.
 closeButton.addEventListener('click', () => {
   setTimeout(() => {
-    container.classList.add('hidden')
-    taskbarTile.classList.add('hidden')
+    addHiddenClassTo(container,taskbarTile)
     reset()
   }, 110)
 })
@@ -317,6 +335,10 @@ function addAndRemoveClass(element, classToAdd, classToRemove) {
   element.classList.add(classToAdd)
   element.classList.remove(classToRemove)
 }
+
+//? Hide/unhide multiple elements
+const removeHiddenClassFrom = (...args) => args.forEach(element => element.classList.remove('hidden'))
+const addHiddenClassTo = (...args) => args.forEach(element => element.classList.add('hidden'))
 
 
 // GENERAL GAME FUNCTIONS
