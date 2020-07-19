@@ -70,7 +70,7 @@ difficultyButtons.forEach(button => {
 
 monitorButtons.forEach(button => {
   button.addEventListener('mousedown', () => {
-    const audio = new Audio('../assets/button-press.mp3')
+    const audio = new Audio('./assets/button-press.mp3')
     audio.volume = 0.25
     audio.play()
   })
