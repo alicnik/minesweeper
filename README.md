@@ -4,6 +4,23 @@ A classic game deserving of a classic feel. [Play it now!](https://alicnik.githu
 
 ![Minesweeper screenshot](./readme_files/minesweeper.png)
 
+## CONTENTS
+
+1. [Goal](#goal)
+2. [HTML](#html)
+3. [CSS](#css)
+4. [JavaScript](#javascript)
+   - [Initial setup](#1-initial-setup)
+   - [Primary Click Events](#2-primary-click-events)
+   - [Gameplay Functions](#3-gameplay-functions)
+   - [Endgame Functions](#4-endgame-functions)
+   - [Drag & Drop](#5-drag--drop)
+   - [Close Button, Desktop Icon, and Desktop Clock](#6-close-button-desktop-icon-and-desktop-clock)
+   - [Mobile Design](#7-mobile-design)
+5. [Key Learnings](#key-learnings)
+6. [Concluding Remarks](#concluding-remarks)
+7. [Future Goals](#future-goals)
+
 ## GOAL
 
 To design and implement a faithful reproduction of the classic Windows game Minesweeper, paying tribute not only to the functionality, but also the playing environment.
