@@ -1,6 +1,6 @@
 # **_MINESWEEPER_**
 
-A classic game deserving of a classic feel. [Play it now!](https://alicnik.github.io/minesweeper/)
+A classic game deserving of a classic feel. [Play it now!](https://alicnik.github.io/minesweeper/) (Best viewed on desktop in full screen.)
 
 ![Minesweeper screenshot](./readme_files/minesweeper.png)
 
@@ -295,7 +295,11 @@ Since mobile phones do not have right click functionality, a button was added to
 
 ## KEY LEARNINGS
 
-This proved to be indispensable practice with the concept of recursion. It was also excellent CSS practice as a number of the
+This proved to be indispensable practice with the concept of recursion. It was also excellent CSS practice as a number of elements were visually dependent on a CSS background, which obviously had no inherent DOM properties to work with.
+
+The greatest challenge was probably implementing drag and drop functionality with multiple items. This taught me the value of iterating over a problem and building upon working functionality in an incremental manner.
+
+Perhaps most of all, it taught me the value of working on a project you really enjoy.
 
 ## CONCLUDING REMARKS
 
@@ -307,4 +311,5 @@ More than anything, I hope you enjoy the game and that it brings back some good 
 
 ## FUTURE GOALS
 
-Since I had more time to implement extra features than originally envisaged, I believe that some of the CSS naming could be smoothed out. Having established a mathematical formula for dragging boundaries, I believe that this could replace the dataset in the HTML code.
+- Since I had more time to implement extra features than originally envisaged, I believe that some of the CSS naming could be smoothed out.
+- Having established a mathematical formula for dragging boundaries, I believe that this could replace the dataset in the HTML code.
